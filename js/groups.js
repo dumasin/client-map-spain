@@ -15,6 +15,8 @@ function toggleGroup(groupId) {
 
 function selectGroup(groupId) {
     activeGroup = groupId;
+    const groupClients = getGroupAllClients(groupId);
+    console.log(`📂 Selected group: ${groupId}, found ${groupClients.length} clients`);
     updateDisplay();
 }
 
@@ -46,7 +48,9 @@ function getGroupAllClients(groupId) {
     }
     
     addChildrenRecursively(groupId);
-    return clients.filter(c => groupAndChildren.includes(c.groupId));
+    const result = clients.filter(c => groupAndChildren.includes(c.groupId));
+    console.log(`🔍 getGroupAllClients(${groupId}): groups=[${groupAndChildren.join(',')}], clients=${result.length}`);
+    return result;
 }
 
 function updateGroupsTree() {
