@@ -1152,6 +1152,12 @@
                 
                 if (groupsData.length > 0) {
                     groups = groupsData;
+                } else {
+                    // Initialize Firebase with default groups if empty
+                    console.log('📝 Initializing Firebase with default groups...');
+                    for (const group of groups) {
+                        await db.collection('groups').doc(group.id).set(group);
+                    }
                 }
 
                 console.log('✅ Data loaded from Firebase:', { clients: clients.length, groups: groups.length });
