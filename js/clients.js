@@ -6,7 +6,6 @@ function setupAddButton() {
     const addBtn = document.getElementById('addBtn');
     const searchInput = document.getElementById('searchInput');
     const projectTypesSection = document.getElementById('projectTypesSection');
-    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
 
     addBtn.addEventListener('click', () => {
         if (!currentSearchResult) return;
@@ -17,7 +16,9 @@ function setupAddButton() {
             return;
         }
 
-        const projectTypes = Array.from(checkboxes)
+        // Get ONLY project type checkboxes from projectTypesSection
+        const projectCheckboxes = projectTypesSection.querySelectorAll('input[type="checkbox"]');
+        const projectTypes = Array.from(projectCheckboxes)
             .filter(cb => cb.checked)
             .map(cb => cb.value);
 
@@ -53,12 +54,13 @@ function setupAddButton() {
         };
 
         clients.push(client);
+        autoSaveToFirebase();
         updateDisplay();
         searchInput.value = '';
         currentSearchResult = null;
         addBtn.disabled = true;
         projectTypesSection.style.display = 'none';
-        checkboxes.forEach(cb => cb.checked = false);
+        projectCheckboxes.forEach(cb => cb.checked = false);
     });
 }
 
