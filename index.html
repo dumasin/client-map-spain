@@ -1146,18 +1146,20 @@
                     id: parseInt(doc.id) // Convert back to number
                 }));
 
-                // Load groups
+                // Clear and reinitialize groups from hardcoded Catalonia structure
+                console.log('📝 Syncing Catalonia groups to Firebase...');
                 const groupsSnapshot = await db.collection('groups').get();
-                const groupsData = groupsSnapshot.docs.map(doc => doc.data());
                 
-                if (groupsData.length > 0) {
-                    groups = groupsData;
-                } else {
-                    // Initialize Firebase with default groups if empty
-                    console.log('📝 Initializing Firebase with default groups...');
-                    for (const group of groups) {
-                        await db.collection('groups').doc(group.id).set(group);
-                    }
+                // Delete all existing groups
+                const batch = db.batch();
+                groupsSnapshot.docs.forEach(doc => {
+                    batch.delete(doc.ref);
+                });
+                await batch.commit();
+                
+                // Save all default groups
+                for (const group of groups) {
+                    await db.collection('groups').doc(group.id).set(group);
                 }
 
                 console.log('✅ Data loaded from Firebase:', { clients: clients.length, groups: groups.length });
