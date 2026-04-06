@@ -174,3 +174,53 @@ function deleteClient(clientId) {
     clients = clients.filter(c => c.id !== clientId);
     updateDisplay();
 }
+
+// Import pre-geocoded towns from data file
+async function importPregeocoded() {
+    console.log('📥 Starting import of pre-geocoded towns...');
+    
+    try {
+        const response = await fetch('/data/towns.json');
+        const towns = await response.json();
+        
+        let addedCount = 0;
+        let skippedCount = 0;
+        
+        for (const town of towns) {
+            // Check if already exists
+            const existing = clients.find(c => c.name.toLowerCase() === town.name.toLowerCase());
+            if (existing) {
+                skippedCount++;
+                continue;
+            }
+            
+            // Detect comarca
+            const townName = town.name.split(',')[0].trim().toLowerCase();
+            let detectedComarca = townToComarca[townName] || 'cat';
+            
+            const client = {
+                id: Date.now() + Math.random(),
+                name: town.name,
+                lat: town.lat,
+                lng: town.lng,
+                projects: [],
+                groupId: detectedComarca,
+                services: {
+                    mantenimiento: { active: false, expiryDate: null },
+                    adm: { active: false, expiryDate: null }
+                }
+            };
+            
+            clients.push(client);
+            addedCount++;
+            console.log(`✅ Imported: ${town.name}`);
+        }
+        
+        console.log(`\n✅ Import complete! Added: ${addedCount}, Skipped: ${skippedCount}`);
+        autoSaveToFirebase();
+        updateDisplay();
+        
+    } catch (error) {
+        console.error('❌ Import failed:', error);
+    }
+}
