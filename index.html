@@ -627,10 +627,163 @@
         // ========== APPLICATION CODE ==========
         // Using Nominatim (OpenStreetMap) for dynamic geocoding
         // Version tracking
-        const APP_VERSION = '1.0.2';
+        const APP_VERSION = '1.1.0';
         
         // This allows searching ANY town/municipality in Spain, including very small ones
         const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
+        
+        // Catalonian town to comarca mapping (F1)
+        const townToComarca = {
+            // Barcelonès
+            'barcelona': 'comarca_barcelones',
+            'sant adrià de besòs': 'comarca_barcelones',
+            'l\'hospitalet de llobregat': 'comarca_barcelones',
+            'el prat de llobregat': 'comarca_barcelones',
+            'cornellà de llobregat': 'comarca_barcelones',
+            
+            // Maresme
+            'mataró': 'comarca_maresme',
+            'arenys de mar': 'comarca_maresme',
+            'canet de mar': 'comarca_maresme',
+            'teià': 'comarca_maresme',
+            'malgrat de mar': 'comarca_maresme',
+            'santa susanna': 'comarca_maresme',
+            'blanes': 'comarca_maresme',
+            
+            // Vallès Occidental
+            'sabadell': 'comarca_valles_occ',
+            'terrassa': 'comarca_valles_occ',
+            'sant quirze': 'comarca_valles_occ',
+            'castellbell i el vilar': 'comarca_valles_occ',
+            'sant cugat del vallès': 'comarca_valles_occ',
+            
+            // Vallès Oriental
+            'granollers': 'comarca_valles_or',
+            'martorelles': 'comarca_valles_or',
+            'montmeló': 'comarca_valles_or',
+            'la roca del vallès': 'comarca_valles_or',
+            
+            // Baix Llobregat
+            'begues': 'comarca_baix_llob',
+            'corbera de llobregat': 'comarca_baix_llob',
+            'sant joan despi': 'comarca_baix_llob',
+            'esplugues de llobregat': 'comarca_baix_llob',
+            
+            // Garraf
+            'sitges': 'comarca_garraf',
+            'vilanova i la geltrú': 'comarca_garraf',
+            'cubelles': 'comarca_garraf',
+            
+            // Anoia
+            'igualada': 'comarca_anoia',
+            'vilanova de sau': 'comarca_anoia',
+            'piera': 'comarca_anoia',
+            
+            // Alt Penedès
+            'vilafranca del penedès': 'comarca_alt_pened',
+            'subirats': 'comarca_alt_pened',
+            
+            // Osona
+            'vic': 'comarca_osona',
+            'calldetenes': 'comarca_osona',
+            'manlleu': 'comarca_osona',
+            
+            // Berguedà
+            'berga': 'comarca_bergueda',
+            'gósol': 'comarca_bergueda',
+            
+            // Moianès
+            'moià': 'comarca_moianes',
+            'castellcir': 'comarca_moianes',
+            
+            // Gironès
+            'girona': 'comarca_gironès',
+            'salt': 'comarca_gironès',
+            'quart': 'comarca_gironès',
+            'riudellots de la selva': 'comarca_gironès',
+            
+            // La Selva
+            'santa coloma de farners': 'comarca_la_selva',
+            'blanes': 'comarca_la_selva',
+            'lloret de mar': 'comarca_la_selva',
+            'tossa de mar': 'comarca_la_selva',
+            
+            // Ripollès
+            'ripoll': 'comarca_ripollès',
+            'sant joan de les abadesses': 'comarca_ripollès',
+            
+            // Garrotxa
+            'olot': 'comarca_garrotxa',
+            'castellfollit de la roca': 'comarca_garrotxa',
+            
+            // Pla de l\'Estany
+            'banyoles': 'comarca_pla_estany',
+            'camós': 'comarca_pla_estany',
+            
+            // Alt Empordà
+            'figures': 'comarca_alt_emporda',
+            'llançà': 'comarca_alt_emporda',
+            'vilajuïga': 'comarca_alt_emporda',
+            
+            // Baix Empordà
+            'la bisbal': 'comarca_baix_emporda',
+            'palafrugell': 'comarca_baix_emporda',
+            'castell de plegamans': 'comarca_baix_emporda',
+            
+            // Cerdanya
+            'puigcerdà': 'comarca_cerdanya',
+            'baga': 'comarca_cerdanya',
+            
+            // Segrià
+            'lleida': 'comarca_segria',
+            'almacelles': 'comarca_segria',
+            'sucs': 'comarca_segria',
+            
+            // Urgell
+            'tàrrega': 'comarca_urgell',
+            'barbens': 'comarca_urgell',
+            
+            // Pla d\'Urgell
+            'mollerussa': 'comarca_pla_urgell',
+            'ivars d\'urgell': 'comarca_pla_urgell',
+            
+            // Solsonès
+            'solsona': 'comarca_solsones',
+            'riner': 'comarca_solsones',
+            
+            // Segarra
+            'cervera': 'comarca_segarra',
+            'calaf': 'comarca_segarra',
+            
+            // Conca de Barberà
+            'montblanc': 'comarca_conca_barb',
+            'l\'espluga de francoli': 'comarca_conca_barb',
+            
+            // Noguera
+            'balaguer': 'comarca_noguera',
+            'aitona': 'comarca_noguera',
+            
+            // Pallars Jussà
+            'tremp': 'comarca_pallars_jussa',
+            'isona': 'comarca_pallars_jussa',
+            
+            // Pallars Sobirà
+            'sort': 'comarca_pallars_sobira',
+            'esterri d\'àneu': 'comarca_pallars_sobira',
+            
+            // Val d\'Aran
+            'vielha': 'comarca_val_aran',
+            'vilac': 'comarca_val_aran',
+            
+            // Alt Urgell
+            'la seu d\'urgell': 'comarca_alt_urgell',
+            'sant julià de lòria': 'comarca_alt_urgell',
+            
+            // Garrigues
+            'lleida': 'comarca_garrigues',
+            'alcalà de gurrea': 'comarca_garrigues',
+            'torrebesses': 'comarca_garrigues'
+        };
         
         // Legacy towns data (empty - will be replaced by dynamic search)
         const spanishTowns = [
@@ -854,6 +1007,24 @@
             }
         }
 
+        // F2: Get all client IDs including from child groups (hierarchical)
+        function getGroupAllClients(groupId) {
+            const groupAndChildren = [groupId];
+            
+            function addChildrenRecursively(gId) {
+                const group = groups.find(g => g.id === gId);
+                if (group && group.children) {
+                    group.children.forEach(childId => {
+                        groupAndChildren.push(childId);
+                        addChildrenRecursively(childId);
+                    });
+                }
+            }
+            
+            addChildrenRecursively(groupId);
+            return clients.filter(c => groupAndChildren.includes(c.groupId));
+        }
+
         function updateGroupsTree() {
             let html = '';
 
@@ -861,6 +1032,8 @@
                 const isExpanded = expandedGroups.has(group.id);
                 const hasChildren = group.children.length > 0;
                 const isActive = group.id === activeGroup;
+                // F2: Count includes all child clients
+                const totalClients = getGroupAllClients(group.id).length;
                 const indent = level * 16;
 
                 html += `
@@ -872,7 +1045,7 @@
                         <div class="group-name" onclick="event.stopPropagation(); selectGroup('${group.id}')" ondblclick="event.stopPropagation(); editGroupName('${group.id}')">
                             ${group.name}
                         </div>
-                        <div class="group-count">${clients.filter(c => c.groupId === group.id).length}</div>
+                        <div class="group-count">${totalClients}</div>
                     </div>
                 `;
 
@@ -976,13 +1149,36 @@
                 .filter(cb => cb.checked)
                 .map(cb => cb.value);
 
+            // F1: Auto-detect comarca from town name
+            const townLower = currentSearchResult.name.toLowerCase();
+            let detectedComarca = townToComarca[townLower];
+            
+            if (!detectedComarca) {
+                // If not found, use current active group (user can manually select)
+                detectedComarca = activeGroup;
+                console.warn(`⚠️ Comarca not found for "${currentSearchResult.name}", assigned to current group`);
+            } else {
+                console.log(`✅ Auto-detected comarca: "${currentSearchResult.name}" → ${detectedComarca}`);
+            }
+
             const client = {
                 id: Date.now(),
                 name: currentSearchResult.name,
                 lat: currentSearchResult.lat,
                 lng: currentSearchResult.lng,
                 projects: projectTypes,
-                groupId: activeGroup
+                groupId: detectedComarca,
+                // F3: Service tracking structure
+                services: {
+                    mantenimiento: {
+                        active: false,
+                        expiryDate: null  // ISO date string: '2026-04-30'
+                    },
+                    adm: {
+                        active: false,
+                        expiryDate: null
+                    }
+                }
             };
 
             clients.push(client);
@@ -1004,8 +1200,31 @@
             updateMapMarkers();
         }
 
+        // F3: Helper function for service status
+        function getServiceStatus(service) {
+            if (!service.active || !service.expiryDate) {
+                return { status: 'inactive', daysLeft: null, display: 'No contract' };
+            }
+            
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const expiry = new Date(service.expiryDate);
+            const daysLeft = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
+            
+            if (daysLeft < 0) {
+                return { status: 'expired', daysLeft: 0, display: '❌ Expired' };
+            } else if (daysLeft === 0) {
+                return { status: 'expiring', daysLeft: 0, display: '⚠️ Expires today' };
+            } else if (daysLeft <= 30) {
+                return { status: 'warning', daysLeft, display: `⚠️ ${daysLeft}d left` };
+            } else {
+                return { status: 'active', daysLeft, display: `✅ ${daysLeft}d left` };
+            }
+        }
+
         function updateClientsList() {
-            const tabClients = clients.filter(c => c.groupId === activeGroup);
+            // F2: Get all clients from active group + child groups
+            const tabClients = getGroupAllClients(activeGroup);
             clientCount.textContent = tabClients.length;
 
             if (tabClients.length === 0) {
@@ -1020,7 +1239,11 @@
             }
 
             clientsList.innerHTML = tabClients
-                .map(client => `
+                .map(client => {
+                    const mtnStatus = getServiceStatus(client.services.mantenimiento);
+                    const admStatus = getServiceStatus(client.services.adm);
+                    
+                    return `
                     <div class="client-item">
                         <div class="client-name">${client.name}</div>
                         <div style="margin-bottom: 8px;">
@@ -1029,6 +1252,23 @@
                                 : '<span style="color: #ccc; font-size: 11px;">No projects selected</span>'
                             }
                         </div>
+                        
+                        <!-- F3: Service Status Display -->
+                        <div style="background: #f5f5f5; padding: 10px; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
+                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                <div>
+                                    <strong>Mantenimiento:</strong> <span style="color: ${mtnStatus.status === 'active' ? '#4CAF50' : mtnStatus.status === 'warning' ? '#ff9800' : '#f44336'}">${mtnStatus.display}</span>
+                                </div>
+                                <button style="padding: 2px 6px; font-size: 10px; cursor: pointer;" onclick="editService(${client.id}, 'mantenimiento')">Edit</button>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <div>
+                                    <strong>ADM:</strong> <span style="color: ${admStatus.status === 'active' ? '#4CAF50' : admStatus.status === 'warning' ? '#ff9800' : '#f44336'}">${admStatus.display}</span>
+                                </div>
+                                <button style="padding: 2px 6px; font-size: 10px; cursor: pointer;" onclick="editService(${client.id}, 'adm')">Edit</button>
+                            </div>
+                        </div>
+                        
                         <div class="project-types">
                             <div class="project-type">
                                 <input type="checkbox" data-client-id="${client.id}" value="ALPR" 
@@ -1053,10 +1293,10 @@
                         </div>
                         <button class="delete-btn" onclick="deleteClient(${client.id})">Remove Client</button>
                     </div>
-                `)
-                .join('');
-
-            // Add event listeners to client checkboxes
+                    `;
+                }).join('');
+            
+            // Attach event listeners
             document.querySelectorAll('.client-checkbox').forEach(checkbox => {
                 checkbox.addEventListener('change', (e) => {
                     const clientId = parseInt(e.target.dataset.clientId);
@@ -1076,10 +1316,47 @@
             });
         }
 
+        // F3: Edit service contract
+        function editService(clientId, serviceType) {
+            const client = clients.find(c => c.id === clientId);
+            if (!client) return;
+            
+            const service = client.services[serviceType];
+            const isActive = service.active;
+            const currentDate = service.expiryDate || new Date().toISOString().split('T')[0];
+            
+            const newActive = confirm(`Enable "${serviceType}" for ${client.name}?\n\n(Click OK for Yes, Cancel for No)`);
+            
+            if (newActive) {
+                // Prompt for expiry date
+                const expiryDateStr = prompt(`Enter expiry date for ${serviceType}:\n(Format: YYYY-MM-DD)\n\nExample: 2026-12-31`, currentDate.split('T')[0]);
+                
+                if (expiryDateStr) {
+                    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+                    if (dateRegex.test(expiryDateStr)) {
+                        service.active = true;
+                        service.expiryDate = expiryDateStr;
+                        console.log(`✅ ${serviceType} activated for ${client.name} until ${expiryDateStr}`);
+                    } else {
+                        alert('Invalid date format. Use YYYY-MM-DD');
+                        return;
+                    }
+                }
+            } else {
+                service.active = false;
+                service.expiryDate = null;
+                console.log(`❌ ${serviceType} deactivated for ${client.name}`);
+            }
+            
+            autoSaveToFirebase();
+            updateClientsList();
+        }
+
         function updateMapMarkers() {
             markerLayer.clearLayers();
 
-            const tabClients = clients.filter(c => c.groupId === activeGroup);
+            // F2: Get hierarchical clients (includes children groups)
+            const tabClients = getGroupAllClients(activeGroup);
 
             tabClients.forEach(client => {
                 if (client.projects.length === 0) {
