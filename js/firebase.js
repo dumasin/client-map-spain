@@ -42,10 +42,20 @@ async function loadFromFirebase() {
     try {
         // Load clients
         const clientsSnapshot = await db.collection('clients').get();
-        clients = clientsSnapshot.docs.map(doc => ({
-            ...doc.data(),
-            id: parseInt(doc.id)
-        }));
+        clients = clientsSnapshot.docs.map(doc => {
+            const clientData = {
+                ...doc.data(),
+                id: parseInt(doc.id)
+            };
+            // Migrate old clients without services object (added in v1.1.0)
+            if (!clientData.services) {
+                clientData.services = {
+                    mantenimiento: { active: false, expiryDate: null },
+                    adm: { active: false, expiryDate: null }
+                };
+            }
+            return clientData;
+        });
 
         // Clear and reinitialize groups from hardcoded Catalonia structure
         console.log('📝 Syncing Catalonia groups to Firebase...');

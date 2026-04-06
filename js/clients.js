@@ -106,6 +106,13 @@ function updateClientsList() {
 
     clientsList.innerHTML = tabClients
         .map(client => {
+            // Defensive: ensure services object exists
+            if (!client.services) {
+                client.services = {
+                    mantenimiento: { active: false, expiryDate: null },
+                    adm: { active: false, expiryDate: null }
+                };
+            }
             const mtnStatus = getServiceStatus(client.services.mantenimiento);
             const admStatus = getServiceStatus(client.services.adm);
             
