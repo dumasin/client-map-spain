@@ -837,6 +837,19 @@
             updateDisplay();
         }
 
+        function editGroupName(groupId) {
+            const group = groups.find(g => g.id === groupId);
+            if (!group) return;
+
+            const newName = prompt(`Rename "${group.name}":', ${group.name}`);
+            if (newName && newName.trim() && newName !== group.name) {
+                group.name = newName.trim();
+                autoSaveToFirebase();
+                updateGroupsTree();
+                console.log(`✏️ Renamed group to "${group.name}"`);
+            }
+        }
+
         function updateGroupsTree() {
             let html = '';
 
@@ -852,7 +865,7 @@
                             ${hasChildren ? '▼' : ''}
                         </div>
                         <div class="group-icon">${hasChildren ? '📁' : '📄'}</div>
-                        <div class="group-name" onmousedown="event.stopPropagation(); selectGroup('${group.id}')">
+                        <div class="group-name" onmousedown="event.stopPropagation(); selectGroup('${group.id}')" ondblclick="event.stopPropagation(); editGroupName('${group.id}')">
                             ${group.name}
                         </div>
                         <div class="group-count">${clients.filter(c => c.groupId === group.id).length}</div>
