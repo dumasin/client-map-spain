@@ -841,10 +841,10 @@
             const group = groups.find(g => g.id === groupId);
             if (!group) return;
 
-            const newName = prompt(`Rename "${group.name}":', ${group.name}`);
+            const newName = prompt(`Rename "${group.name}":`, group.name);
             if (newName && newName.trim() && newName !== group.name) {
                 group.name = newName.trim();
-                autoSaveToFirebase();
+                saveGroupsToFirebase();
                 updateGroupsTree();
                 console.log(`✏️ Renamed group to "${group.name}"`);
             }
