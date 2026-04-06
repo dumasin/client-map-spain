@@ -865,11 +865,11 @@
 
                 html += `
                     <div class="group-node ${isActive ? 'active' : ''}" style="padding-left: ${indent}px;">
-                        <div class="group-toggle ${!hasChildren ? 'empty' : ''} ${!isExpanded ? 'collapsed' : ''}" onmousedown="event.stopPropagation(); toggleGroup('${group.id}')">
+                        <div class="group-toggle ${!hasChildren ? 'empty' : ''} ${!isExpanded ? 'collapsed' : ''}" onclick="event.stopPropagation(); toggleGroup('${group.id}')">
                             ${hasChildren ? '▼' : ''}
                         </div>
                         <div class="group-icon">${hasChildren ? '📁' : '📄'}</div>
-                        <div class="group-name" onmousedown="event.stopPropagation(); selectGroup('${group.id}')" ondblclick="event.stopPropagation(); editGroupName('${group.id}')">
+                        <div class="group-name" onclick="event.stopPropagation(); selectGroup('${group.id}')" ondblclick="event.stopPropagation(); editGroupName('${group.id}')">
                             ${group.name}
                         </div>
                         <div class="group-count">${clients.filter(c => c.groupId === group.id).length}</div>
