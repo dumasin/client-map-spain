@@ -99,208 +99,161 @@
             border-color: #667eea;
         }
 
-        .search-results {
-            position: absolute;
-            background: white;
-            border: 1px solid #e0e0e0;
-            border-radius: 6px;
-            max-height: 200px;
-            overflow-y: auto;
-            width: 100%;
-            margin-top: 2px;
-            display: none;
-            z-index: 1000;
-        }
-
-        .search-results.active {
-            display: block;
-        }
-
-        .search-result-item {
-            padding: 10px 12px;
-            cursor: pointer;
-            border-bottom: 1px solid #f0f0f0;
-            font-size: 13px;
-            transition: background-color 0.2s;
-        }
-
-        .search-result-item:hover {
-            background-color: #f5f5f5;
-        }
-
-        .search-result-item:last-child {
-            border-bottom: none;
-        }
-
-        .btn {
+        #addBtn {
             padding: 10px 16px;
-            background: #667eea;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 13px;
             font-weight: 600;
-            transition: background-color 0.3s;
-            white-space: nowrap;
+            font-size: 13px;
+            transition: transform 0.2s, box-shadow 0.2s;
         }
 
-        .btn:hover {
-            background-color: #5568d3;
+        #addBtn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
         }
 
-        .btn:disabled {
-            background-color: #ccc;
+        #addBtn:disabled {
+            opacity: 0.5;
             cursor: not-allowed;
         }
 
-        .tabs-section {
-            margin-bottom: 20px;
-        }
-
-        .tabs-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 12px;
-        }
-
-        .tabs-header label {
-            font-size: 13px;
-            font-weight: 600;
-            color: #333;
-            white-space: nowrap;
-        }
-
-        .group-buttons {
-            display: flex;
-            gap: 6px;
-        }
-
-        .btn-small {
-            padding: 6px 10px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 11px;
-            font-weight: 600;
-            transition: background-color 0.3s;
-            white-space: nowrap;
-        }
-
-        .btn-small:hover {
-            background-color: #5568d3;
-        }
-
-        .btn-delete {
-            background: #ff6b6b;
-        }
-
-        .btn-delete:hover {
-            background-color: #ee5a52;
-        }
-
-        .new-group-input-container {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            flex-wrap: wrap;
-        }
-
-        .new-group-input {
-            flex: 1;
-            min-width: 120px;
-            padding: 6px 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 11px;
-        }
-
-        .new-group-input:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .parent-group-select {
-            min-width: 100px;
-            padding: 6px 8px;
-            border: 2px solid #e0e0e0;
-            border-radius: 4px;
-            font-size: 10px;
-            background: white;
-            cursor: pointer;
-        }
-
-        .parent-group-select:focus {
-            outline: none;
-            border-color: #667eea;
-        }
-
-        .groups-tree {
-            background: #fafafa;
+        #searchResults {
+            display: none;
+            background: #f9f9f9;
             border: 1px solid #e0e0e0;
             border-radius: 6px;
-            padding: 4px 0;
-            margin-bottom: 15px;
-            max-height: 300px;
+            margin-top: 8px;
+            max-height: 200px;
             overflow-y: auto;
+            z-index: 100;
+        }
+
+        #searchResults.active {
+            display: block;
+        }
+
+        .search-result {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .search-result:hover {
+            background: #efefef;
+        }
+
+        .search-result.selected {
+            background: #e8eef7;
+            border-bottom: none;
+            cursor: default;
+        }
+
+        .result-name {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 3px;
+        }
+
+        .result-coords {
+            font-size: 11px;
+            color: #999;
+        }
+
+        .group-controls {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .group-controls button {
+            flex: 1;
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .group-controls button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .groups-section-header {
+            font-weight: 700;
+            font-size: 13px;
+            color: #333;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        #newGroupInputContainer {
+            display: none;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 6px;
+        }
+
+        #newGroupInputContainer input {
+            flex: 1;
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
             font-size: 12px;
         }
 
-        .groups-tree::-webkit-scrollbar {
-            width: 6px;
+        #parentGroupSelect {
+            flex: 1;
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 12px;
         }
 
-        .groups-tree::-webkit-scrollbar-track {
-            background: transparent;
+        #newGroupInputContainer button {
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
         }
 
-        .groups-tree::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
+        #newGroupInputContainer button:hover {
+            border-color: #667eea;
+            color: #667eea;
         }
 
-        .groups-tree::-webkit-scrollbar-thumb:hover {
-            background: #999;
+        .groups-tree {
+            margin-bottom: 20px;
+            max-height: 250px;
+            overflow-y: auto;
         }
 
         .group-node {
             display: flex;
             align-items: center;
-            gap: 4px;
-            padding: 6px 8px;
-            cursor: pointer;
-            transition: background-color 0.2s;
+            padding: 6px 0;
             user-select: none;
         }
 
-        .group-node:hover {
-            background-color: #e8e8ff;
-        }
-
-        .group-node.active {
-            background-color: #d8d8ff;
-            color: #667eea;
-            font-weight: 600;
-        }
-
         .group-toggle {
-            display: inline-flex;
-            width: 16px;
-            height: 16px;
-            align-items: center;
+            width: 20px;
+            display: flex;
             justify-content: center;
-            font-size: 10px;
-            color: #666;
-            transition: transform 0.2s;
-            flex-shrink: 0;
-        }
-
-        .group-toggle.collapsed {
-            transform: rotate(-90deg);
+            cursor: pointer;
+            font-size: 12px;
         }
 
         .group-toggle.empty {
@@ -308,96 +261,128 @@
         }
 
         .group-icon {
-            font-size: 12px;
-            margin-right: 2px;
-            flex-shrink: 0;
+            width: 20px;
+            text-align: center;
+            font-size: 14px;
         }
 
         .group-name {
             flex: 1;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
+            margin-left: 4px;
+            font-size: 13px;
+            cursor: pointer;
+            padding: 4px 6px;
+            border-radius: 3px;
+            transition: background 0.2s;
+        }
+
+        .group-name:hover {
+            background: #f0f0f0;
+        }
+
+        .group-node.active .group-name {
+            background: #667eea;
+            color: white;
+            font-weight: 600;
         }
 
         .group-count {
-            font-size: 10px;
-            color: #999;
-            margin-left: 4px;
+            background: #e8eef7;
+            color: #667eea;
+            font-weight: 600;
+            font-size: 11px;
+            padding: 2px 6px;
+            border-radius: 12px;
+            min-width: 20px;
+            text-align: center;
         }
 
-        .group-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.2s;
-        }
-
-        .group-content.expanded {
-            max-height: 500px;
-        }
-
-        .group-indent {
-            display: contents;
+        .group-node.active .group-count {
+            background: rgba(255, 255, 255, 0.3);
+            color: white;
         }
 
         .clients-list-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-top: 20px;
-            margin-bottom: 12px;
-        }
-
-        .clients-list-header h2 {
-            font-size: 15px;
+            font-weight: 700;
+            font-size: 13px;
             color: #333;
-            font-weight: 600;
+            margin-bottom: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e0e0e0;
+            text-transform: uppercase;
         }
 
         .client-count {
             background: #667eea;
             color: white;
+            font-weight: 600;
+            font-size: 11px;
             padding: 3px 8px;
             border-radius: 12px;
-            font-size: 11px;
-            font-weight: 600;
-        }
-
-        .tab-selector {
-            font-size: 11px;
-            padding: 4px 8px;
-            margin-right: 8px;
+            min-width: 24px;
+            text-align: center;
         }
 
         .clients-list {
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 12px;
+            max-height: 400px;
+            overflow-y: auto;
         }
 
         .client-item {
-            background: #f9f9f9;
-            border: 1px solid #e0e0e0;
+            background: white;
+            border: 2px solid #e0e0e0;
             border-radius: 8px;
             padding: 12px;
-            transition: all 0.3s;
+            transition: all 0.2s;
         }
 
         .client-item:hover {
             border-color: #667eea;
-            box-shadow: 0 2px 8px rgba(102, 126, 234, 0.1);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .client-name {
-            font-weight: 600;
+            font-weight: 700;
+            font-size: 13px;
             color: #333;
             margin-bottom: 8px;
-            font-size: 13px;
+        }
+
+        .project-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 10px;
+            font-weight: 600;
+            color: white;
+            margin-right: 4px;
+        }
+
+        .project-badge.alpr {
+            background: #FF6B6B;
+        }
+
+        .project-badge.cctv {
+            background: #4ECDC4;
+        }
+
+        .project-badge.cme {
+            background: #45B7D1;
+        }
+
+        .project-badge.residuos {
+            background: #96CEB4;
         }
 
         .project-types {
-            display: flex;
-            flex-wrap: wrap;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
             margin-bottom: 8px;
         }
@@ -408,98 +393,56 @@
             gap: 4px;
         }
 
-        .project-type input[type="checkbox"] {
-            width: 14px;
-            height: 14px;
+        .project-type input {
             cursor: pointer;
         }
 
         .project-type label {
             font-size: 11px;
             cursor: pointer;
-            color: #555;
-        }
-
-        .project-badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
-            font-weight: 600;
-            color: white;
-            margin-bottom: 8px;
-        }
-
-        .project-badge.alpr {
-            background-color: #FF6B6B;
-        }
-
-        .project-badge.cctv {
-            background-color: #4ECDC4;
-        }
-
-        .project-badge.cme {
-            background-color: #45B7D1;
-        }
-
-        .project-badge.residuos {
-            background-color: #96CEB4;
-        }
-
-        .project-badge.other {
-            background-color: #BDBDBD;
         }
 
         .delete-btn {
-            background: #ff6b6b;
-            padding: 6px 10px;
-            font-size: 11px;
-            margin-top: 8px;
             width: 100%;
+            padding: 6px;
+            background: #ffebee;
+            border: 1px solid #f44336;
+            color: #f44336;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 11px;
+            font-weight: 600;
+            transition: all 0.2s;
         }
 
         .delete-btn:hover {
-            background-color: #ee5a52;
+            background: #f44336;
+            color: white;
         }
 
         .empty-state {
             text-align: center;
-            padding: 20px 10px;
+            padding: 20px;
             color: #999;
-            font-size: 13px;
+            font-size: 12px;
         }
 
         .empty-state-icon {
             font-size: 32px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
         }
 
-        /* Scrollbar styling */
-        .sidebar-content::-webkit-scrollbar {
-            width: 6px;
+        #projectTypesSection {
+            display: none;
+            background: #f9f9f9;
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 12px;
+            border-left: 4px solid #667eea;
         }
 
-        .sidebar-content::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        .sidebar-content::-webkit-scrollbar-thumb {
-            background: #ccc;
-            border-radius: 3px;
-        }
-
-        .sidebar-content::-webkit-scrollbar-thumb:hover {
-            background: #999;
-        }
-
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 100%;
-                position: absolute;
-                height: 50%;
-                bottom: 0;
-                border-radius: 12px 12px 0 0;
-            }
+        .project-types label {
+            font-weight: 500;
         }
     </style>
 </head>
@@ -511,7 +454,7 @@
             <div class="sidebar-header">
                 <h1>🗺️ Client Map</h1>
                 <p>España</p>
-                <p style="font-size: 11px; opacity: 0.8; margin-top: 8px;">v<span id="versionDisplay">1.0.2</span></p>
+                <p style="font-size: 11px; opacity: 0.8; margin-top: 8px;">v<span id="versionDisplay">1.1.1</span></p>
             </div>
             
             <div class="sidebar-content">
@@ -524,51 +467,48 @@
                             class="search-input" 
                             placeholder="Enter town name..."
                         >
-                        <button id="addBtn" class="btn" disabled>Add</button>
+                        <button id="addBtn" disabled>Add</button>
                     </div>
-                    <div id="searchResults" class="search-results"></div>
+                    <div id="searchResults"></div>
                 </div>
 
-                <div id="projectTypesSection" style="display: none; margin-bottom: 15px;">
-                    <label style="font-weight: 600; margin-bottom: 8px; color: #333; font-size: 13px; display: block;">Project Types</label>
+                <div id="projectTypesSection">
+                    <label style="display: block; font-weight: 600; margin-bottom: 8px; font-size: 12px;">Project Types:</label>
                     <div class="project-types">
                         <div class="project-type">
-                            <input type="checkbox" id="alpr" value="ALPR">
-                            <label for="alpr">ALPR</label>
+                            <input type="checkbox" id="alprCheck" value="ALPR">
+                            <label for="alprCheck">ALPR</label>
                         </div>
                         <div class="project-type">
-                            <input type="checkbox" id="cctv" value="CCTV">
-                            <label for="cctv">CCTV</label>
+                            <input type="checkbox" id="cctvCheck" value="CCTV">
+                            <label for="cctvCheck">CCTV</label>
                         </div>
                         <div class="project-type">
-                            <input type="checkbox" id="cme" value="CME">
-                            <label for="cme">CME</label>
+                            <input type="checkbox" id="cmeCheck" value="CME">
+                            <label for="cmeCheck">CME</label>
                         </div>
                         <div class="project-type">
-                            <input type="checkbox" id="residuos" value="Residuos">
-                            <label for="residuos">Residuos</label>
+                            <input type="checkbox" id="residuosCheck" value="Residuos">
+                            <label for="residuosCheck">Residuos</label>
                         </div>
                     </div>
                 </div>
 
-                <div class="tabs-section">
-                    <div class="tabs-header">
-                        <label>📁 Groups</label>
-                        <div class="group-buttons">
-                            <button class="btn-small" id="newGroupBtn">+ New</button>
-                            <button class="btn-small btn-delete" id="deleteGroupBtn">Delete</button>
-                        </div>
-                    </div>
-                    <div id="newGroupInputContainer" class="new-group-input-container" style="display: none;">
-                        <input type="text" id="newGroupInput" class="new-group-input" placeholder="Group name...">
-                        <select id="parentGroupSelect" class="parent-group-select">
-                            <option value="">Root</option>
-                        </select>
-                        <button class="btn-small" id="saveGroupBtn">Create</button>
-                        <button class="btn-small" style="background: #ccc;" id="cancelGroupBtn">Cancel</button>
-                    </div>
-                    <div class="groups-tree" id="groupsTree"></div>
+                <div class="groups-section-header">Groups</div>
+
+                <div class="group-controls">
+                    <button id="newGroupBtn">➕ New Group</button>
+                    <button id="deleteGroupBtn">🗑️ Delete</button>
                 </div>
+
+                <div id="newGroupInputContainer">
+                    <input type="text" id="newGroupInput" placeholder="New group name...">
+                    <select id="parentGroupSelect"></select>
+                    <button id="saveGroupBtn">Save</button>
+                    <button id="cancelGroupBtn">Cancel</button>
+                </div>
+
+                <div class="groups-tree" id="groupsTree"></div>
 
                 <div class="clients-list-header">
                     <h2>Clients</h2>
@@ -594,947 +534,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.2/firebase-firestore-compat.js"></script>
     
-    <script>
-        // ========== FIREBASE SETUP ==========
-        // Firebase configuration - ✅ Configured for client-map-spain project
-        const firebaseConfig = {
-          apiKey: "AIzaSyCl_oopl39rjSE99QX5RmobDqDUN7Rurv8",
-          authDomain: "client-map-spain.firebaseapp.com",
-          projectId: "client-map-spain",
-          storageBucket: "client-map-spain.firebasestorage.app",
-          messagingSenderId: "324265024594",
-          appId: "1:324265024594:web:51cbd7bf7b4cc1f486538b",
-          measurementId: "G-RMN34B7JEX"
-        };
-
-        let db = null;
-        let isFirebaseReady = false;
-
-        // Initialize Firebase
-        if (firebaseConfig.projectId && firebaseConfig.projectId !== "REPLACE_WITH_YOUR_PROJECT_ID") {
-            try {
-                firebase.initializeApp(firebaseConfig);
-                db = firebase.firestore();
-                isFirebaseReady = true;
-                console.log('✅ Firebase initialized successfully');
-            } catch (error) {
-                console.error('❌ Firebase initialization error:', error);
-            }
-        } else {
-            console.warn('⚠️ Firebase not configured. Update index.html with your credentials.');
-        }
-
-        // ========== APPLICATION CODE ==========
-        // Using Nominatim (OpenStreetMap) for dynamic geocoding
-        // Version tracking
-        const APP_VERSION = '1.1.0';
-        
-        // This allows searching ANY town/municipality in Spain, including very small ones
-        const NOMINATIM_URL = 'https://nominatim.openstreetmap.org/search';
-        
-        // Catalonian town to comarca mapping (F1)
-        const townToComarca = {
-            // Barcelonès
-            'barcelona': 'comarca_barcelones',
-            'sant adrià de besòs': 'comarca_barcelones',
-            'l\'hospitalet de llobregat': 'comarca_barcelones',
-            'el prat de llobregat': 'comarca_barcelones',
-            'cornellà de llobregat': 'comarca_barcelones',
-            
-            // Maresme
-            'mataró': 'comarca_maresme',
-            'arenys de mar': 'comarca_maresme',
-            'canet de mar': 'comarca_maresme',
-            'teià': 'comarca_maresme',
-            'malgrat de mar': 'comarca_maresme',
-            'santa susanna': 'comarca_maresme',
-            'blanes': 'comarca_maresme',
-            
-            // Vallès Occidental
-            'sabadell': 'comarca_valles_occ',
-            'terrassa': 'comarca_valles_occ',
-            'sant quirze': 'comarca_valles_occ',
-            'castellbell i el vilar': 'comarca_valles_occ',
-            'sant cugat del vallès': 'comarca_valles_occ',
-            
-            // Vallès Oriental
-            'granollers': 'comarca_valles_or',
-            'martorelles': 'comarca_valles_or',
-            'montmeló': 'comarca_valles_or',
-            'la roca del vallès': 'comarca_valles_or',
-            
-            // Baix Llobregat
-            'begues': 'comarca_baix_llob',
-            'corbera de llobregat': 'comarca_baix_llob',
-            'sant joan despi': 'comarca_baix_llob',
-            'esplugues de llobregat': 'comarca_baix_llob',
-            
-            // Garraf
-            'sitges': 'comarca_garraf',
-            'vilanova i la geltrú': 'comarca_garraf',
-            'cubelles': 'comarca_garraf',
-            
-            // Anoia
-            'igualada': 'comarca_anoia',
-            'vilanova de sau': 'comarca_anoia',
-            'piera': 'comarca_anoia',
-            
-            // Alt Penedès
-            'vilafranca del penedès': 'comarca_alt_pened',
-            'subirats': 'comarca_alt_pened',
-            
-            // Osona
-            'vic': 'comarca_osona',
-            'calldetenes': 'comarca_osona',
-            'manlleu': 'comarca_osona',
-            
-            // Berguedà
-            'berga': 'comarca_bergueda',
-            'gósol': 'comarca_bergueda',
-            
-            // Moianès
-            'moià': 'comarca_moianes',
-            'castellcir': 'comarca_moianes',
-            
-            // Gironès
-            'girona': 'comarca_gironès',
-            'salt': 'comarca_gironès',
-            'quart': 'comarca_gironès',
-            'riudellots de la selva': 'comarca_gironès',
-            
-            // La Selva
-            'santa coloma de farners': 'comarca_la_selva',
-            'blanes': 'comarca_la_selva',
-            'lloret de mar': 'comarca_la_selva',
-            'tossa de mar': 'comarca_la_selva',
-            
-            // Ripollès
-            'ripoll': 'comarca_ripollès',
-            'sant joan de les abadesses': 'comarca_ripollès',
-            
-            // Garrotxa
-            'olot': 'comarca_garrotxa',
-            'castellfollit de la roca': 'comarca_garrotxa',
-            
-            // Pla de l\'Estany
-            'banyoles': 'comarca_pla_estany',
-            'camós': 'comarca_pla_estany',
-            
-            // Alt Empordà
-            'figures': 'comarca_alt_emporda',
-            'llançà': 'comarca_alt_emporda',
-            'vilajuïga': 'comarca_alt_emporda',
-            
-            // Baix Empordà
-            'la bisbal': 'comarca_baix_emporda',
-            'palafrugell': 'comarca_baix_emporda',
-            'castell de plegamans': 'comarca_baix_emporda',
-            
-            // Cerdanya
-            'puigcerdà': 'comarca_cerdanya',
-            'baga': 'comarca_cerdanya',
-            
-            // Segrià
-            'lleida': 'comarca_segria',
-            'almacelles': 'comarca_segria',
-            'sucs': 'comarca_segria',
-            
-            // Urgell
-            'tàrrega': 'comarca_urgell',
-            'barbens': 'comarca_urgell',
-            
-            // Pla d\'Urgell
-            'mollerussa': 'comarca_pla_urgell',
-            'ivars d\'urgell': 'comarca_pla_urgell',
-            
-            // Solsonès
-            'solsona': 'comarca_solsones',
-            'riner': 'comarca_solsones',
-            
-            // Segarra
-            'cervera': 'comarca_segarra',
-            'calaf': 'comarca_segarra',
-            
-            // Conca de Barberà
-            'montblanc': 'comarca_conca_barb',
-            'l\'espluga de francoli': 'comarca_conca_barb',
-            
-            // Noguera
-            'balaguer': 'comarca_noguera',
-            'aitona': 'comarca_noguera',
-            
-            // Pallars Jussà
-            'tremp': 'comarca_pallars_jussa',
-            'isona': 'comarca_pallars_jussa',
-            
-            // Pallars Sobirà
-            'sort': 'comarca_pallars_sobira',
-            'esterri d\'àneu': 'comarca_pallars_sobira',
-            
-            // Val d\'Aran
-            'vielha': 'comarca_val_aran',
-            'vilac': 'comarca_val_aran',
-            
-            // Alt Urgell
-            'la seu d\'urgell': 'comarca_alt_urgell',
-            'sant julià de lòria': 'comarca_alt_urgell',
-            
-            // Garrigues
-            'lleida': 'comarca_garrigues',
-            'alcalà de gurrea': 'comarca_garrigues',
-            'torrebesses': 'comarca_garrigues'
-        };
-        
-        // Legacy towns data (empty - will be replaced by dynamic search)
-        const spanishTowns = [
-        ];
-
-        let clients = [];
-        let groups = [
-            // Catalonia
-            { id: 'cat', name: 'Catalonia', parent: null, children: ['prov_barcelona', 'prov_girona', 'prov_lleida', 'prov_tarragona'] },
-            
-            // Barcelona Province
-            { id: 'prov_barcelona', name: 'Barcelona', parent: 'cat', children: ['comarca_barcelones', 'comarca_maresme', 'comarca_valles_occ', 'comarca_valles_or', 'comarca_baix_llob', 'comarca_garraf', 'comarca_anoia', 'comarca_alt_pened', 'comarca_osona', 'comarca_bergueda', 'comarca_moianes'] },
-            { id: 'comarca_barcelones', name: 'Barcelonès', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_maresme', name: 'Maresme', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_valles_occ', name: 'Vallès Occidental', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_valles_or', name: 'Vallès Oriental', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_baix_llob', name: 'Baix Llobregat', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_garraf', name: 'Garraf', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_anoia', name: 'Anoia', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_alt_pened', name: 'Alt Penedès', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_osona', name: 'Osona', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_bergueda', name: 'Berguedà', parent: 'prov_barcelona', children: [] },
-            { id: 'comarca_moianes', name: 'Moianès', parent: 'prov_barcelona', children: [] },
-            
-            // Girona Province
-            { id: 'prov_girona', name: 'Girona', parent: 'cat', children: ['comarca_gironès', 'comarca_la_selva', 'comarca_ripollès', 'comarca_garrotxa', 'comarca_pla_estany', 'comarca_alt_emporda', 'comarca_baix_emporda', 'comarca_cerdanya'] },
-            { id: 'comarca_gironès', name: 'Gironès', parent: 'prov_girona', children: [] },
-            { id: 'comarca_la_selva', name: 'La Selva', parent: 'prov_girona', children: [] },
-            { id: 'comarca_ripollès', name: 'Ripollès', parent: 'prov_girona', children: [] },
-            { id: 'comarca_garrotxa', name: 'Garrotxa', parent: 'prov_girona', children: [] },
-            { id: 'comarca_pla_estany', name: 'Pla de l\'Estany', parent: 'prov_girona', children: [] },
-            { id: 'comarca_alt_emporda', name: 'Alt Empordà', parent: 'prov_girona', children: [] },
-            { id: 'comarca_baix_emporda', name: 'Baix Empordà', parent: 'prov_girona', children: [] },
-            { id: 'comarca_cerdanya', name: 'Cerdanya', parent: 'prov_girona', children: [] },
-            
-            // Lleida Province
-            { id: 'prov_lleida', name: 'Lleida', parent: 'cat', children: ['comarca_segria', 'comarca_urgell', 'comarca_pla_urgell', 'comarca_solsones', 'comarca_segarra', 'comarca_conca_barb', 'comarca_noguera', 'comarca_pallars_jussa', 'comarca_pallars_sobira', 'comarca_val_aran', 'comarca_alt_urgell', 'comarca_garrigues'] },
-            { id: 'comarca_segria', name: 'Segrià', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_urgell', name: 'Urgell', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_pla_urgell', name: 'Pla d\'Urgell', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_solsones', name: 'Solsonès', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_segarra', name: 'Segarra', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_conca_barb', name: 'Conca de Barberà', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_noguera', name: 'Noguera', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_pallars_jussa', name: 'Pallars Jussà', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_pallars_sobira', name: 'Pallars Sobirà', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_val_aran', name: 'Val d\'Aran', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_alt_urgell', name: 'Alt Urgell', parent: 'prov_lleida', children: [] },
-            { id: 'comarca_garrigues', name: 'Garrigues', parent: 'prov_lleida', children: [] },
-            
-            // Tarragona Province
-            { id: 'prov_tarragona', name: 'Tarragona', parent: 'cat', children: ['comarca_tarragonès', 'comarca_baix_camp', 'comarca_alt_camp', 'comarca_ribera_ebre', 'comarca_baix_ebre', 'comarca_montsia'] },
-            { id: 'comarca_tarragonès', name: 'Tarragonès', parent: 'prov_tarragona', children: [] },
-            { id: 'comarca_baix_camp', name: 'Baix Camp', parent: 'prov_tarragona', children: [] },
-            { id: 'comarca_alt_camp', name: 'Alt Camp', parent: 'prov_tarragona', children: [] },
-            { id: 'comarca_ribera_ebre', name: 'Ribera d\'Ebre', parent: 'prov_tarragona', children: [] },
-            { id: 'comarca_baix_ebre', name: 'Baix Ebre', parent: 'prov_tarragona', children: [] },
-            { id: 'comarca_montsia', name: 'Montsià', parent: 'prov_tarragona', children: [] }
-        ];
-        let activeGroup = 'cat';
-        let currentSearchResult = null;
-        let markers = {};
-        let markerLayer = null;
-
-        // Initialize map
-        const map = L.map('map').setView([40.5, -3.5], 6);
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 19,
-        }).addTo(map);
-
-        markerLayer = L.featureGroup().addTo(map);
-
-        // Project type colors
-        const projectColors = {
-            'ALPR': '#FF6B6B',
-            'CCTV': '#4ECDC4',
-            'CME': '#45B7D1',
-            'Residuos': '#96CEB4'
-        };
-
-        // Search functionality
-        const searchInput = document.getElementById('searchInput');
-        const searchResults = document.getElementById('searchResults');
-        const addBtn = document.getElementById('addBtn');
-        const clientsList = document.getElementById('clientsList');
-        const clientCount = document.getElementById('clientCount');
-        const projectTypesSection = document.getElementById('projectTypesSection');
-        const checkboxes = document.querySelectorAll('input[type="checkbox"]');
-
-        // Group management
-        const newGroupBtn = document.getElementById('newGroupBtn');
-        const deleteGroupBtn = document.getElementById('deleteGroupBtn');
-        const newGroupInputContainer = document.getElementById('newGroupInputContainer');
-        const newGroupInput = document.getElementById('newGroupInput');
-        const parentGroupSelect = document.getElementById('parentGroupSelect');
-        const saveGroupBtn = document.getElementById('saveGroupBtn');
-        const cancelGroupBtn = document.getElementById('cancelGroupBtn');
-        const groupsTree = document.getElementById('groupsTree');
-
-        let expandedGroups = new Set();
-
-        newGroupBtn.addEventListener('click', () => {
-            newGroupInputContainer.style.display = 'flex';
-            newGroupInput.focus();
-            updateParentGroupSelect();
-        });
-
-        cancelGroupBtn.addEventListener('click', () => {
-            newGroupInputContainer.style.display = 'none';
-            newGroupInput.value = '';
-        });
-
-        saveGroupBtn.addEventListener('click', createGroup);
-        newGroupInput.addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') createGroup();
-        });
-
-        deleteGroupBtn.addEventListener('click', deleteGroup);
-
-        function updateParentGroupSelect() {
-            const options = ['<option value="">Root</option>'];
-            groups.forEach(group => {
-                options.push(`<option value="${group.id}">${group.name}</option>`);
-            });
-            parentGroupSelect.innerHTML = options.join('');
-        }
-
-        function createGroup() {
-            const groupName = newGroupInput.value.trim();
-            if (!groupName) return;
-
-            const groupId = 'group_' + Date.now();
-            const parentId = parentGroupSelect.value || null;
-
-            const newGroup = {
-                id: groupId,
-                name: groupName,
-                parent: parentId,
-                children: []
-            };
-
-            groups.push(newGroup);
-
-            // Add to parent's children if parent exists
-            if (parentId) {
-                const parent = groups.find(g => g.id === parentId);
-                if (parent) {
-                    parent.children.push(groupId);
-                    expandedGroups.add(parentId);
-                }
-            }
-
-            newGroupInput.value = '';
-            newGroupInputContainer.style.display = 'none';
-            activeGroup = groupId;
-            updateDisplay();
-        }
-
-        function deleteGroup() {
-            if (activeGroup === 'general') {
-                alert('Cannot delete the General group!');
-                return;
-            }
-
-            const group = groups.find(g => g.id === activeGroup);
-            if (!group) return;
-
-            // Move clients from deleted group to General
-            clients.forEach(client => {
-                if (client.groupId === activeGroup) {
-                    client.groupId = 'general';
-                }
-            });
-
-            // Move child groups to General
-            groups.forEach(g => {
-                if (g.parent === activeGroup) {
-                    g.parent = null;
-                }
-            });
-
-            // Remove from parent's children
-            if (group.parent) {
-                const parent = groups.find(g => g.id === group.parent);
-                if (parent) {
-                    parent.children = parent.children.filter(id => id !== activeGroup);
-                }
-            }
-
-            groups = groups.filter(g => g.id !== activeGroup);
-            expandedGroups.delete(activeGroup);
-            activeGroup = 'general';
-            updateDisplay();
-        }
-
-        function toggleGroup(groupId) {
-            if (expandedGroups.has(groupId)) {
-                expandedGroups.delete(groupId);
-            } else {
-                expandedGroups.add(groupId);
-            }
-            updateGroupsTree();
-        }
-
-        function selectGroup(groupId) {
-            activeGroup = groupId;
-            updateDisplay();
-        }
-
-        function editGroupName(groupId) {
-            const group = groups.find(g => g.id === groupId);
-            if (!group) return;
-
-            const newName = prompt(`Rename "${group.name}":`, group.name);
-            if (newName && newName.trim() && newName !== group.name) {
-                group.name = newName.trim();
-                saveGroupsToFirebase();
-                updateGroupsTree();
-                console.log(`✏️ Renamed group to "${group.name}"`);
-            }
-        }
-
-        // F2: Get all client IDs including from child groups (hierarchical)
-        function getGroupAllClients(groupId) {
-            const groupAndChildren = [groupId];
-            
-            function addChildrenRecursively(gId) {
-                const group = groups.find(g => g.id === gId);
-                if (group && group.children) {
-                    group.children.forEach(childId => {
-                        groupAndChildren.push(childId);
-                        addChildrenRecursively(childId);
-                    });
-                }
-            }
-            
-            addChildrenRecursively(groupId);
-            return clients.filter(c => groupAndChildren.includes(c.groupId));
-        }
-
-        function updateGroupsTree() {
-            let html = '';
-
-            function renderGroup(group, level = 0) {
-                const isExpanded = expandedGroups.has(group.id);
-                const hasChildren = group.children.length > 0;
-                const isActive = group.id === activeGroup;
-                // F2: Count includes all child clients
-                const totalClients = getGroupAllClients(group.id).length;
-                const indent = level * 16;
-
-                html += `
-                    <div class="group-node ${isActive ? 'active' : ''}" style="padding-left: ${indent}px;">
-                        <div class="group-toggle ${!hasChildren ? 'empty' : ''} ${!isExpanded ? 'collapsed' : ''}" onclick="event.stopPropagation(); toggleGroup('${group.id}')">
-                            ${hasChildren ? '▼' : ''}
-                        </div>
-                        <div class="group-icon">${hasChildren ? '📁' : '📄'}</div>
-                        <div class="group-name" onclick="event.stopPropagation(); selectGroup('${group.id}')" ondblclick="event.stopPropagation(); editGroupName('${group.id}')">
-                            ${group.name}
-                        </div>
-                        <div class="group-count">${totalClients}</div>
-                    </div>
-                `;
-
-                if (isExpanded && hasChildren) {
-                    group.children.forEach(childId => {
-                        const child = groups.find(g => g.id === childId);
-                        if (child) renderGroup(child, level + 1);
-                    });
-                }
-            }
-
-            // Render root groups only
-            groups.forEach(group => {
-                if (!group.parent) {
-                    renderGroup(group);
-                }
-            });
-
-            groupsTree.innerHTML = html;
-        }
-
-        let searchTimeout;
-        let lastQuery = '';
-
-        searchInput.addEventListener('input', (e) => {
-            const query = e.target.value.trim();
-            
-            if (query.length < 2) {
-                searchResults.classList.remove('active');
-                addBtn.disabled = true;
-                currentSearchResult = null;
-                clearTimeout(searchTimeout);
-                return;
-            }
-
-            // Debounce search to avoid hammering API
-            clearTimeout(searchTimeout);
-            searchResults.innerHTML = '<div style="padding: 10px; text-align: center; font-size: 12px; color: #999;">🔍 Searching...</div>';
-            searchResults.classList.add('active');
-
-            searchTimeout = setTimeout(() => {
-                performSearch(query);
-            }, 400);
-        });
-
-        function performSearch(query) {
-            if (lastQuery === query) return;
-            lastQuery = query;
-
-            const url = `https://nominatim.openstreetmap.org/search?q=${encodeURIComponent(query + ', Spain')}&format=json&limit=20&countrycodes=es&accept-language=en`;
-            
-            fetch(url, { 
-                headers: { 'Accept': 'application/json' }
-            })
-                .then(response => response.json())
-                .then(data => {
-                    if (!Array.isArray(data) || data.length === 0) {
-                        searchResults.innerHTML = '<div style="padding: 10px; text-align: center; font-size: 12px; color: #999;">No results found</div>';
-                        return;
-                    }
-
-                    const filtered = data.slice(0, 15);
-                    
-                    searchResults.innerHTML = filtered
-                        .map(result => {
-                            const escapedName = result.name.replace(/'/g, "\\'");
-                            return `
-                                <div class="search-result-item" onclick="selectTown('${escapedName}', ${result.lat}, ${result.lon})">
-                                    📍 ${result.name}
-                                </div>
-                            `;
-                        })
-                        .join('');
-                    searchResults.classList.add('active');
-                })
-                .catch(error => {
-                    console.error('Search error:', error);
-                    searchResults.innerHTML = '<div style="padding: 10px; text-align: center; font-size: 12px; color: #f00;">Search failed. Try again.</div>';
-                });
-        }
-
-        function selectTown(name, lat, lng) {
-            currentSearchResult = { name, lat, lng };
-            searchInput.value = name;
-            searchResults.classList.remove('active');
-            addBtn.disabled = false;
-            projectTypesSection.style.display = 'block';
-            checkboxes.forEach(cb => cb.checked = false);
-        }
-
-        addBtn.addEventListener('click', () => {
-            if (!currentSearchResult) return;
-
-            const existingClient = clients.find(c => c.name === currentSearchResult.name);
-            if (existingClient) {
-                alert('This town is already in the client list!');
-                return;
-            }
-
-            const projectTypes = Array.from(checkboxes)
-                .filter(cb => cb.checked)
-                .map(cb => cb.value);
-
-            // F1: Auto-detect comarca from town name
-            const townLower = currentSearchResult.name.toLowerCase();
-            let detectedComarca = townToComarca[townLower];
-            
-            if (!detectedComarca) {
-                // If not found, use current active group (user can manually select)
-                detectedComarca = activeGroup;
-                console.warn(`⚠️ Comarca not found for "${currentSearchResult.name}", assigned to current group`);
-            } else {
-                console.log(`✅ Auto-detected comarca: "${currentSearchResult.name}" → ${detectedComarca}`);
-            }
-
-            const client = {
-                id: Date.now(),
-                name: currentSearchResult.name,
-                lat: currentSearchResult.lat,
-                lng: currentSearchResult.lng,
-                projects: projectTypes,
-                groupId: detectedComarca,
-                // F3: Service tracking structure
-                services: {
-                    mantenimiento: {
-                        active: false,
-                        expiryDate: null  // ISO date string: '2026-04-30'
-                    },
-                    adm: {
-                        active: false,
-                        expiryDate: null
-                    }
-                }
-            };
-
-            clients.push(client);
-            updateDisplay();
-            searchInput.value = '';
-            currentSearchResult = null;
-            addBtn.disabled = true;
-            projectTypesSection.style.display = 'none';
-            checkboxes.forEach(cb => cb.checked = false);
-        });
-
-        checkboxes.forEach(checkbox => {
-            checkbox.addEventListener('change', updateMapMarkers);
-        });
-
-        function updateDisplay() {
-            updateGroupsTree();
-            updateClientsList();
-            updateMapMarkers();
-        }
-
-        // F3: Helper function for service status
-        function getServiceStatus(service) {
-            if (!service.active || !service.expiryDate) {
-                return { status: 'inactive', daysLeft: null, display: 'No contract' };
-            }
-            
-            const today = new Date();
-            today.setHours(0, 0, 0, 0);
-            const expiry = new Date(service.expiryDate);
-            const daysLeft = Math.ceil((expiry - today) / (1000 * 60 * 60 * 24));
-            
-            if (daysLeft < 0) {
-                return { status: 'expired', daysLeft: 0, display: '❌ Expired' };
-            } else if (daysLeft === 0) {
-                return { status: 'expiring', daysLeft: 0, display: '⚠️ Expires today' };
-            } else if (daysLeft <= 30) {
-                return { status: 'warning', daysLeft, display: `⚠️ ${daysLeft}d left` };
-            } else {
-                return { status: 'active', daysLeft, display: `✅ ${daysLeft}d left` };
-            }
-        }
-
-        function updateClientsList() {
-            // F2: Get all clients from active group + child groups
-            const tabClients = getGroupAllClients(activeGroup);
-            clientCount.textContent = tabClients.length;
-
-            if (tabClients.length === 0) {
-                clientsList.innerHTML = `
-                    <div class="empty-state">
-                        <div class="empty-state-icon">📍</div>
-                        <div>No clients in this group yet</div>
-                        <div style="font-size: 11px; margin-top: 5px;">Search and add towns to get started</div>
-                    </div>
-                `;
-                return;
-            }
-
-            clientsList.innerHTML = tabClients
-                .map(client => {
-                    const mtnStatus = getServiceStatus(client.services.mantenimiento);
-                    const admStatus = getServiceStatus(client.services.adm);
-                    
-                    return `
-                    <div class="client-item">
-                        <div class="client-name">${client.name}</div>
-                        <div style="margin-bottom: 8px;">
-                            ${client.projects.length > 0 
-                                ? client.projects.map(proj => `<span class="project-badge ${proj.toLowerCase()}">${proj}</span>`).join(' ')
-                                : '<span style="color: #ccc; font-size: 11px;">No projects selected</span>'
-                            }
-                        </div>
-                        
-                        <!-- F3: Service Status Display -->
-                        <div style="background: #f5f5f5; padding: 10px; border-radius: 4px; margin-bottom: 10px; font-size: 12px;">
-                            <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                                <div>
-                                    <strong>Mantenimiento:</strong> <span style="color: ${mtnStatus.status === 'active' ? '#4CAF50' : mtnStatus.status === 'warning' ? '#ff9800' : '#f44336'}">${mtnStatus.display}</span>
-                                </div>
-                                <button style="padding: 2px 6px; font-size: 10px; cursor: pointer;" onclick="editService(${client.id}, 'mantenimiento')">Edit</button>
-                            </div>
-                            <div style="display: flex; justify-content: space-between;">
-                                <div>
-                                    <strong>ADM:</strong> <span style="color: ${admStatus.status === 'active' ? '#4CAF50' : admStatus.status === 'warning' ? '#ff9800' : '#f44336'}">${admStatus.display}</span>
-                                </div>
-                                <button style="padding: 2px 6px; font-size: 10px; cursor: pointer;" onclick="editService(${client.id}, 'adm')">Edit</button>
-                            </div>
-                        </div>
-                        
-                        <div class="project-types">
-                            <div class="project-type">
-                                <input type="checkbox" data-client-id="${client.id}" value="ALPR" 
-                                    ${client.projects.includes('ALPR') ? 'checked' : ''} class="client-checkbox">
-                                <label>ALPR</label>
-                            </div>
-                            <div class="project-type">
-                                <input type="checkbox" data-client-id="${client.id}" value="CCTV" 
-                                    ${client.projects.includes('CCTV') ? 'checked' : ''} class="client-checkbox">
-                                <label>CCTV</label>
-                            </div>
-                            <div class="project-type">
-                                <input type="checkbox" data-client-id="${client.id}" value="CME" 
-                                    ${client.projects.includes('CME') ? 'checked' : ''} class="client-checkbox">
-                                <label>CME</label>
-                            </div>
-                            <div class="project-type">
-                                <input type="checkbox" data-client-id="${client.id}" value="Residuos" 
-                                    ${client.projects.includes('Residuos') ? 'checked' : ''} class="client-checkbox">
-                                <label>Residuos</label>
-                            </div>
-                        </div>
-                        <button class="delete-btn" onclick="deleteClient(${client.id})">Remove Client</button>
-                    </div>
-                    `;
-                }).join('');
-            
-            // Attach event listeners
-            document.querySelectorAll('.client-checkbox').forEach(checkbox => {
-                checkbox.addEventListener('change', (e) => {
-                    const clientId = parseInt(e.target.dataset.clientId);
-                    const projectType = e.target.value;
-                    const client = clients.find(c => c.id === clientId);
-                    
-                    if (e.target.checked) {
-                        if (!client.projects.includes(projectType)) {
-                            client.projects.push(projectType);
-                        }
-                    } else {
-                        client.projects = client.projects.filter(p => p !== projectType);
-                    }
-                    
-                    updateDisplay();
-                });
-            });
-        }
-
-        // F3: Edit service contract
-        function editService(clientId, serviceType) {
-            const client = clients.find(c => c.id === clientId);
-            if (!client) return;
-            
-            const service = client.services[serviceType];
-            const isActive = service.active;
-            const currentDate = service.expiryDate || new Date().toISOString().split('T')[0];
-            
-            const newActive = confirm(`Enable "${serviceType}" for ${client.name}?\n\n(Click OK for Yes, Cancel for No)`);
-            
-            if (newActive) {
-                // Prompt for expiry date
-                const expiryDateStr = prompt(`Enter expiry date for ${serviceType}:\n(Format: YYYY-MM-DD)\n\nExample: 2026-12-31`, currentDate.split('T')[0]);
-                
-                if (expiryDateStr) {
-                    const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-                    if (dateRegex.test(expiryDateStr)) {
-                        service.active = true;
-                        service.expiryDate = expiryDateStr;
-                        console.log(`✅ ${serviceType} activated for ${client.name} until ${expiryDateStr}`);
-                    } else {
-                        alert('Invalid date format. Use YYYY-MM-DD');
-                        return;
-                    }
-                }
-            } else {
-                service.active = false;
-                service.expiryDate = null;
-                console.log(`❌ ${serviceType} deactivated for ${client.name}`);
-            }
-            
-            autoSaveToFirebase();
-            updateClientsList();
-        }
-
-        function updateMapMarkers() {
-            markerLayer.clearLayers();
-
-            // F2: Get hierarchical clients (includes children groups)
-            const tabClients = getGroupAllClients(activeGroup);
-
-            tabClients.forEach(client => {
-                if (client.projects.length === 0) {
-                    // Gray marker for clients without projects
-                    const marker = L.circleMarker([client.lat, client.lng], {
-                        radius: 8,
-                        fillColor: '#bdbdbd',
-                        color: '#999',
-                        weight: 2,
-                        opacity: 1,
-                        fillOpacity: 0.8
-                    });
-                    marker.bindPopup(`<b>${client.name}</b><br>No projects assigned`);
-                    markerLayer.addLayer(marker);
-                } else {
-                    // Create a circle marker for each project type
-                    client.projects.forEach((project, index) => {
-                        const color = projectColors[project] || '#999';
-                        const marker = L.circleMarker([client.lat, client.lng], {
-                            radius: 8,
-                            fillColor: color,
-                            color: color,
-                            weight: 2,
-                            opacity: 1,
-                            fillOpacity: 0.8
-                        });
-                        
-                        const popupText = `
-                            <b>${client.name}</b><br>
-                            <small>${client.projects.join(', ')}</small>
-                        `;
-                        marker.bindPopup(popupText);
-                        markerLayer.addLayer(marker);
-                    });
-                }
-            });
-        }
-
-        function deleteClient(clientId) {
-            clients = clients.filter(c => c.id !== clientId);
-            updateDisplay();
-        }
-
-        // Center map on a client when clicked
-        document.addEventListener('click', (e) => {
-            if (e.target.closest('.client-item')) {
-                const item = e.target.closest('.client-item');
-                const clientName = item.querySelector('.client-name').textContent;
-                const client = clients.find(c => c.name === clientName);
-                if (client) {
-                    map.setView([client.lat, client.lng], 12);
-                }
-            }
-        });
-
-        // Close search results when clicking outside
-        document.addEventListener('click', (e) => {
-            if (!e.target.closest('.search-container')) {
-                searchResults.classList.remove('active');
-            }
-        });
-
-        // Initial display
-        updateGroupsTree();
-        updateClientsList();
-
-        // ========== FIREBASE SYNC ==========
-        
-        // Load data from Firebase on startup
-        async function loadFromFirebase() {
-            if (!db) {
-                console.warn('Firebase not initialized');
-                return;
-            }
-
-            try {
-                // Load clients
-                const clientsSnapshot = await db.collection('clients').get();
-                clients = clientsSnapshot.docs.map(doc => ({
-                    ...doc.data(),
-                    id: parseInt(doc.id) // Convert back to number
-                }));
-
-                // Clear and reinitialize groups from hardcoded Catalonia structure
-                console.log('📝 Syncing Catalonia groups to Firebase...');
-                const groupsSnapshot = await db.collection('groups').get();
-                
-                // Delete all existing groups
-                const batch = db.batch();
-                groupsSnapshot.docs.forEach(doc => {
-                    batch.delete(doc.ref);
-                });
-                await batch.commit();
-                
-                // Save all default groups
-                for (const group of groups) {
-                    await db.collection('groups').doc(group.id).set(group);
-                }
-
-                console.log('✅ Data loaded from Firebase:', { clients: clients.length, groups: groups.length });
-                updateDisplay();
-            } catch (error) {
-                console.error('Error loading from Firebase:', error);
-            }
-        }
-
-        // Save clients to Firebase
-        async function saveClientsToFirebase() {
-            if (!db) return;
-
-            try {
-                // Clear existing clients
-                const snapshot = await db.collection('clients').get();
-                const batch = db.batch();
-                snapshot.docs.forEach(doc => {
-                    batch.delete(doc.ref);
-                });
-                await batch.commit();
-
-                // Save new clients
-                for (const client of clients) {
-                    await db.collection('clients').doc(client.id.toString()).set(client);
-                }
-                console.log('💾 Clients saved to Firebase');
-            } catch (error) {
-                console.error('Error saving clients:', error);
-            }
-        }
-
-        // Save groups to Firebase
-        async function saveGroupsToFirebase() {
-            if (!db) return;
-
-            try {
-                // Clear existing groups
-                const snapshot = await db.collection('groups').get();
-                const batch = db.batch();
-                snapshot.docs.forEach(doc => {
-                    batch.delete(doc.ref);
-                });
-                await batch.commit();
-
-                // Save new groups
-                for (const group of groups) {
-                    await db.collection('groups').doc(group.id).set(group);
-                }
-                console.log('💾 Groups saved to Firebase');
-            } catch (error) {
-                console.error('Error saving groups:', error);
-            }
-        }
-
-        // Auto-save function (debounced)
-        let saveTimeout;
-        function autoSaveToFirebase() {
-            clearTimeout(saveTimeout);
-            saveTimeout = setTimeout(async () => {
-                await saveClientsToFirebase();
-                await saveGroupsToFirebase();
-            }, 1000); // Save 1 second after last change
-        }
-
-        // Update display to include Firebase sync
-        const originalUpdateDisplay = updateDisplay;
-        updateDisplay = function() {
-            originalUpdateDisplay();
-            if (isFirebaseReady) {
-                autoSaveToFirebase();
-            }
-        };
-
-        // Load Firebase data when page loads
-        if (isFirebaseReady) {
-            loadFromFirebase();
-        }
-        
-        // Display version
-        document.getElementById('versionDisplay').textContent = APP_VERSION;
-    </script>
+    <!-- Modular Scripts -->
+    <script src="js/config.js"></script>
+    <script src="js/firebase.js"></script>
+    <script src="js/groups.js"></script>
+    <script src="js/search.js"></script>
+    <script src="js/services.js"></script>
+    <script src="js/map.js"></script>
+    <script src="js/clients.js"></script>
+    <script src="js/app.js"></script>
 </body>
 </html>
