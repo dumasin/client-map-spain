@@ -77,16 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
     setupClientCheckboxes();
     setupMapClickHandlers();
     
-    // Setup import button
-    const importBtn = document.getElementById('importBtn');
-    if (importBtn) {
-        importBtn.addEventListener('click', () => {
-            if (confirm('Import 178 pre-geocoded towns? (empty projects - you can add manually)')) {
-                importPregeocoded();
-            }
-        });
-    }
-    
     // Setup group buttons
     const newGroupBtn = document.getElementById('newGroupBtn');
     const deleteGroupBtn = document.getElementById('deleteGroupBtn');
