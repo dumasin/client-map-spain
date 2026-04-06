@@ -67,7 +67,17 @@ function selectSearchResult(name, lat, lng, index) {
     const addBtn = document.getElementById('addBtn');
     const searchInput = document.getElementById('searchInput');
 
-    currentSearchResult = { name, lat, lng };
+    // Extract just the town name from display_name
+    // Format is usually: "Town, Region, Province, Country..."
+    // We want just the first part (town name)
+    const townName = name.split(',')[0].trim();
+
+    currentSearchResult = { 
+        name: townName,  // Store just the town name for comarca lookup
+        displayName: name,  // Store full display name for UI
+        lat, 
+        lng 
+    };
     
     // Show selected result
     searchResults.classList.add('active');

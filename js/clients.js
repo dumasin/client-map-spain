@@ -23,19 +23,20 @@ function setupAddButton() {
             .map(cb => cb.value);
 
         // F1: Auto-detect comarca from town name
+        // currentSearchResult.name contains JUST the town name (already extracted)
         const townLower = currentSearchResult.name.toLowerCase();
         let detectedComarca = townToComarca[townLower];
         
         if (!detectedComarca) {
             detectedComarca = activeGroup;
-            console.warn(`⚠️ Comarca not found for "${currentSearchResult.name}", assigned to current group`);
+            console.warn(`⚠️ Comarca not found for "${currentSearchResult.name}", assigned to current group "${activeGroup}"`);
         } else {
             console.log(`✅ Auto-detected comarca: "${currentSearchResult.name}" → ${detectedComarca}`);
         }
 
         const client = {
             id: Date.now(),
-            name: currentSearchResult.name,
+            name: currentSearchResult.displayName || currentSearchResult.name,  // Use full display name for UI
             lat: currentSearchResult.lat,
             lng: currentSearchResult.lng,
             projects: projectTypes,
