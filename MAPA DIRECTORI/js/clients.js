@@ -86,12 +86,15 @@ function setupClientCheckboxes() {
 }
 
 function updateClientsList() {
-    // F2: Get all clients from active group + child groups
-    const tabClients = getGroupAllClients(activeGroup);
+    const allClients = getGroupAllClients(activeGroup);
+    const searchTerm = (document.getElementById('clientSearch')?.value || '').toLowerCase().trim();
+    const tabClients = searchTerm
+        ? allClients.filter(c => c.name.toLowerCase().includes(searchTerm))
+        : allClients;
     const clientCount = document.getElementById('clientCount');
     const clientsList = document.getElementById('clientsList');
-    
-    clientCount.textContent = tabClients.length;
+
+    clientCount.textContent = allClients.length;
 
     if (tabClients.length === 0) {
         clientsList.innerHTML = `

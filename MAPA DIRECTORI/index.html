@@ -525,6 +525,19 @@
         .project-types label {
             font-weight: 500;
         }
+
+        .section-toggle { font-size: 10px; margin-left: 6px; color: #999; }
+
+        #clientSearch {
+            width: 100%;
+            padding: 7px 10px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 12px;
+            margin-bottom: 8px;
+            box-sizing: border-box;
+        }
+        #clientSearch:focus { outline: none; border-color: #667eea; }
     </style>
 </head>
 <body>
@@ -544,17 +557,19 @@
             
             <div class="sidebar-content">
                 <div class="search-section">
-                    <label>Search Town/City</label>
-                    <div class="search-container">
-                        <input 
-                            type="text" 
-                            id="searchInput" 
-                            class="search-input" 
-                            placeholder="Enter town name..."
-                        >
-                        <button id="addBtn" disabled>Add</button>
+                    <label style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleSection('searchBody')">Search Town/City <span class="section-toggle" id="toggle_searchBody">▼</span></label>
+                    <div id="searchBody">
+                        <div class="search-container">
+                            <input
+                                type="text"
+                                id="searchInput"
+                                class="search-input"
+                                placeholder="Enter town name..."
+                            >
+                            <button id="addBtn" disabled>Add</button>
+                        </div>
+                        <div id="searchResults"></div>
                     </div>
-                    <div id="searchResults"></div>
                 </div>
 
                 <div id="projectTypesSection">
@@ -579,41 +594,45 @@
                     </div>
                 </div>
 
-                <div class="groups-section-header">Groups</div>
+                <div class="groups-section-header" style="cursor:pointer;display:flex;justify-content:space-between;align-items:center;" onclick="toggleSection('groupsBody')">Groups <span class="section-toggle" id="toggle_groupsBody">▼</span></div>
 
-                <div class="group-controls">
-                    <button id="newGroupBtn">➕ New Group</button>
-                    <button id="moveGroupBtn">↕️ Move</button>
-                    <button id="deleteGroupBtn">🗑️ Delete</button>
+                <div id="groupsBody">
+                    <div class="group-controls">
+                        <button id="newGroupBtn">➕ New Group</button>
+                        <button id="moveGroupBtn">↕️ Move</button>
+                        <button id="deleteGroupBtn">🗑️ Delete</button>
+                    </div>
+
+                    <div id="newGroupInputContainer">
+                        <input type="text" id="newGroupInput" placeholder="New group name...">
+                        <select id="parentGroupSelect"></select>
+                        <button id="saveGroupBtn">Save</button>
+                        <button id="cancelGroupBtn">Cancel</button>
+                    </div>
+
+                    <div id="moveGroupContainer">
+                        <span style="font-size: 12px; font-weight: 600; white-space: nowrap;">Move to:</span>
+                        <select id="moveParentSelect"></select>
+                        <button id="saveMoveBtn">Move</button>
+                        <button id="cancelMoveBtn">Cancel</button>
+                    </div>
+
+                    <div class="groups-tree" id="groupsTree"></div>
                 </div>
-
-                <div id="newGroupInputContainer">
-                    <input type="text" id="newGroupInput" placeholder="New group name...">
-                    <select id="parentGroupSelect"></select>
-                    <button id="saveGroupBtn">Save</button>
-                    <button id="cancelGroupBtn">Cancel</button>
-                </div>
-
-                <div id="moveGroupContainer">
-                    <span style="font-size: 12px; font-weight: 600; white-space: nowrap;">Move to:</span>
-                    <select id="moveParentSelect"></select>
-                    <button id="saveMoveBtn">Move</button>
-                    <button id="cancelMoveBtn">Cancel</button>
-                </div>
-
-                <div class="groups-tree" id="groupsTree"></div>
 
                 <div class="clients-list-header">
-                    <h2>Clients</h2>
+                    <h2 style="cursor:pointer;display:flex;align-items:center;gap:4px;" onclick="toggleSection('clientsBody')">Clients <span class="section-toggle" id="toggle_clientsBody">▼</span></h2>
                     <span class="client-count" id="clientCount">0</span>
                 </div>
-                
+                <input type="text" id="clientSearch" placeholder="Filter clients...">
+                <div id="clientsBody">
                 <div class="clients-list" id="clientsList">
                     <div class="empty-state">
                         <div class="empty-state-icon">📍</div>
                         <div>No clients added yet</div>
                         <div style="font-size: 11px; margin-top: 5px;">Search and add towns to get started</div>
                     </div>
+                </div>
                 </div>
             </div>
         </div>

@@ -59,6 +59,15 @@ let groups = [
 ];
 let activeGroup = 'cat';
 
+function toggleSection(id) {
+    const body = document.getElementById(id);
+    const arrow = document.getElementById('toggle_' + id);
+    if (!body) return;
+    const collapsed = body.style.display === 'none';
+    body.style.display = collapsed ? '' : 'none';
+    if (arrow) arrow.textContent = collapsed ? '▼' : '▶';
+}
+
 function updateDisplay() {
     updateGroupsTree();
     updateClientsList();
@@ -113,6 +122,9 @@ document.addEventListener('DOMContentLoaded', () => {
     if (cancelMoveBtn) cancelMoveBtn.addEventListener('click', () => {
         document.getElementById('moveGroupContainer').style.display = 'none';
     });
+
+    const clientSearch = document.getElementById('clientSearch');
+    if (clientSearch) clientSearch.addEventListener('input', updateClientsList);
 
     const manualSaveBtn = document.getElementById('manualSaveBtn');
     if (manualSaveBtn) manualSaveBtn.addEventListener('click', manualSave);
