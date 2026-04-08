@@ -22,17 +22,14 @@ function setupAddButton() {
             .filter(cb => cb.checked)
             .map(cb => cb.value);
 
-        // F1: Auto-detect comarca from town name
-        // currentSearchResult.name contains JUST the town name (already extracted)
-        const townLower = currentSearchResult.name.toLowerCase();
-        let detectedComarca = townToComarca[townLower];
-        
-        if (!detectedComarca) {
-            detectedComarca = activeGroup;
-            console.warn(`⚠️ Comarca not found for "${currentSearchResult.name}", assigned to current group "${activeGroup}"`);
-        } else {
-            console.log(`✅ Auto-detected comarca: "${currentSearchResult.name}" → ${detectedComarca}`);
+        // Auto-detect comarca from Nominatim display_name (second comma segment)
+        let detectedComarca = null;
+        const comarcaText = currentSearchResult.displayName && currentSearchResult.displayName.split(',')[1];
+        if (comarcaText) {
+            const matched = findGroupByName(comarcaText.trim());
+            if (matched) detectedComarca = matched.id;
         }
+        if (!detectedComarca) detectedComarca = activeGroup;
 
         const client = {
             id: Date.now(),

@@ -165,3 +165,8 @@ const townToComarca = {
     'alcalà de gurrea': 'comarca_garrigues',
     'torrebesses': 'comarca_garrigues'
 };
+
+// Normalize text for accent-insensitive, case-insensitive matching
+function normalizeText(str) {
+    return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim();
+}

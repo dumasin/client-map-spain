@@ -105,6 +105,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     if (deleteGroupBtn) deleteGroupBtn.addEventListener('click', deleteGroup);
 
+    const moveGroupBtn = document.getElementById('moveGroupBtn');
+    const saveMoveBtn = document.getElementById('saveMoveBtn');
+    const cancelMoveBtn = document.getElementById('cancelMoveBtn');
+    if (moveGroupBtn) moveGroupBtn.addEventListener('click', showMoveContainer);
+    if (saveMoveBtn) saveMoveBtn.addEventListener('click', moveGroup);
+    if (cancelMoveBtn) cancelMoveBtn.addEventListener('click', () => {
+        document.getElementById('moveGroupContainer').style.display = 'none';
+    });
+
     const manualSaveBtn = document.getElementById('manualSaveBtn');
     if (manualSaveBtn) manualSaveBtn.addEventListener('click', manualSave);
     

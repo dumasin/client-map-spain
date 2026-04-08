@@ -169,6 +169,39 @@
             color: #ff9a9a;
         }
 
+        #moveGroupContainer {
+            display: none;
+            gap: 8px;
+            margin-bottom: 15px;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 6px;
+            align-items: center;
+        }
+
+        #moveParentSelect {
+            flex: 1;
+            padding: 8px 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+
+        #moveGroupContainer button {
+            padding: 8px 12px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #moveGroupContainer button:hover {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
         #searchResults {
             display: none;
             background: #f9f9f9;
@@ -550,6 +583,7 @@
 
                 <div class="group-controls">
                     <button id="newGroupBtn">➕ New Group</button>
+                    <button id="moveGroupBtn">↕️ Move</button>
                     <button id="deleteGroupBtn">🗑️ Delete</button>
                 </div>
 
@@ -558,6 +592,13 @@
                     <select id="parentGroupSelect"></select>
                     <button id="saveGroupBtn">Save</button>
                     <button id="cancelGroupBtn">Cancel</button>
+                </div>
+
+                <div id="moveGroupContainer">
+                    <span style="font-size: 12px; font-weight: 600; white-space: nowrap;">Move to:</span>
+                    <select id="moveParentSelect"></select>
+                    <button id="saveMoveBtn">Move</button>
+                    <button id="cancelMoveBtn">Cancel</button>
                 </div>
 
                 <div class="groups-tree" id="groupsTree"></div>

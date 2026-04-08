@@ -145,6 +145,62 @@ function createGroup() {
     updateParentGroupSelect();
 }
 
+function findGroupByName(name) {
+    const normalized = normalizeText(name);
+    return groups.find(g => normalizeText(g.name) === normalized);
+}
+
+function getGroupDescendants(groupId) {
+    const result = new Set([groupId]);
+    const group = groups.find(g => g.id === groupId);
+    if (group) {
+        group.children.forEach(childId => {
+            getGroupDescendants(childId).forEach(id => result.add(id));
+        });
+    }
+    return result;
+}
+
+function showMoveContainer() {
+    if (!activeGroup) return;
+    const excluded = getGroupDescendants(activeGroup);
+    const options = ['<option value="">Root (no parent)</option>'];
+    groups.forEach(g => {
+        if (!excluded.has(g.id)) {
+            options.push(`<option value="${g.id}">${g.name}</option>`);
+        }
+    });
+    document.getElementById('moveParentSelect').innerHTML = options.join('');
+    document.getElementById('moveGroupContainer').style.display = 'flex';
+}
+
+function moveGroup() {
+    const group = groups.find(g => g.id === activeGroup);
+    if (!group) return;
+    const newParentId = document.getElementById('moveParentSelect').value || null;
+    if (newParentId === group.parent) {
+        document.getElementById('moveGroupContainer').style.display = 'none';
+        return;
+    }
+    // Remove from old parent's children
+    if (group.parent) {
+        const oldParent = groups.find(g => g.id === group.parent);
+        if (oldParent) oldParent.children = oldParent.children.filter(id => id !== activeGroup);
+    }
+    // Add to new parent's children
+    group.parent = newParentId;
+    if (newParentId) {
+        const newParent = groups.find(g => g.id === newParentId);
+        if (newParent) {
+            newParent.children.push(activeGroup);
+            expandedGroups.add(newParentId);
+        }
+    }
+    document.getElementById('moveGroupContainer').style.display = 'none';
+    autoSaveToFirebase();
+    updateDisplay();
+}
+
 function deleteGroup() {
     if (!activeGroup || activeGroup === 'general') {
         alert('Cannot delete the general group');
