@@ -29,45 +29,56 @@ const SAVE_EVERY = 20; // Save and verify Firebase after every N towns
 async function saveAndVerify(page) {
   console.log(`\n  💾 Saving to Firebase...`);
 
-  // Wait for the save button to be enabled
-  await page.waitForSelector('#manualSaveBtn:not([disabled])', { timeout: 15000 });
-  await page.click('#manualSaveBtn');
-
-  // Wait for "✅ Saved!" confirmation in the status element
   try {
-    await page.waitForFunction(() => {
-      const s = document.getElementById('saveStatus');
-      return s && s.textContent.includes('Saved');
-    }, { timeout: 30000 });
-  } catch {
-    console.log('  ⚠️  Save confirmation not detected — continuing anyway');
-  }
+    // Wait up to 90s for the save button to be free (large saves take time)
+    await page.waitForSelector('#manualSaveBtn:not([disabled])', { timeout: 90000 });
+    await page.click('#manualSaveBtn');
 
-  // Verify Firebase document count
-  const firebaseCount = await page.evaluate(async () => {
+    // Wait for "✅ Saved!" confirmation
     try {
-      const snap = await db.collection('clients').get();
-      return snap.docs.length;
-    } catch (e) {
-      return -1;
+      await page.waitForFunction(() => {
+        const s = document.getElementById('saveStatus');
+        return s && s.textContent.includes('Saved');
+      }, { timeout: 60000 });
+    } catch {
+      console.log('  ⚠️  Save confirmation not detected — continuing anyway');
     }
-  });
 
-  if (firebaseCount === -1) {
-    console.log(`  ⚠️  Could not read Firebase count`);
-  } else {
-    console.log(`  ✅ Firebase has ${firebaseCount} clients total`);
+    // Verify Firebase document count
+    const firebaseCount = await page.evaluate(async () => {
+      try {
+        const snap = await db.collection('clients').get();
+        return snap.docs.length;
+      } catch (e) {
+        return -1;
+      }
+    });
+
+    if (firebaseCount === -1) {
+      console.log(`  ⚠️  Could not read Firebase count`);
+    } else {
+      console.log(`  ✅ Firebase has ${firebaseCount} clients total`);
+    }
+  } catch (err) {
+    console.log(`  ⚠️  Save checkpoint failed: ${err.message}`);
   }
 
-  await page.waitForTimeout(1000); // Brief pause before continuing
+  await page.waitForTimeout(1000);
 }
 
 (async () => {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
 
+  // Auto-dismiss alert() dialogs (e.g. "town already added")
+  page.on('dialog', async dialog => {
+    console.log(`  ⏭️  Already exists — skipping`);
+    await dialog.dismiss();
+  });
+
   console.log('🌐 Opening app...');
-  await page.goto('https://alphamap.netlify.app', { waitUntil: 'domcontentloaded', timeout: 60000 });
+  const appUrl = process.env.APP_URL || 'https://alphamap.netlify.app';
+  await page.goto(appUrl, { waitUntil: 'domcontentloaded', timeout: 60000 });
   await page.waitForTimeout(3000); // Wait for Firebase data to load
 
   let successCount = 0;

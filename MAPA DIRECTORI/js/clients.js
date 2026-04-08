@@ -10,7 +10,9 @@ function setupAddButton() {
     addBtn.addEventListener('click', () => {
         if (!currentSearchResult) return;
 
-        const existingClient = clients.find(c => c.name === currentSearchResult.name);
+        const existingClient = clients.find(c =>
+            c.name.split(',')[0].trim().toLowerCase() === currentSearchResult.name.toLowerCase()
+        );
         if (existingClient) {
             alert('This town is already in the client list!');
             return;
