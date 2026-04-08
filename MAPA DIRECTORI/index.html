@@ -121,6 +121,54 @@
             cursor: not-allowed;
         }
 
+        .save-bar {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 10px;
+            justify-content: center;
+        }
+
+        #manualSaveBtn {
+            padding: 6px 16px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        #manualSaveBtn:hover:not(:disabled) {
+            background: rgba(255, 255, 255, 0.35);
+        }
+
+        #manualSaveBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .save-status {
+            font-size: 12px;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.85);
+            min-width: 90px;
+        }
+
+        .save-status.saving {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .save-status.success {
+            color: #a8f0c6;
+        }
+
+        .save-status.error {
+            color: #ff9a9a;
+        }
+
         #searchResults {
             display: none;
             background: #f9f9f9;
@@ -455,6 +503,10 @@
                 <h1>🗺️ Client Map</h1>
                 <p>España</p>
                 <p style="font-size: 11px; opacity: 0.8; margin-top: 8px;">v<span id="versionDisplay">1.1.1</span></p>
+                <div class="save-bar">
+                    <button id="manualSaveBtn">💾 Save</button>
+                    <span id="saveStatus" class="save-status"></span>
+                </div>
             </div>
             
             <div class="sidebar-content">

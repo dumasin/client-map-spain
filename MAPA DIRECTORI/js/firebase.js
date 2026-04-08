@@ -57,20 +57,16 @@ async function loadFromFirebase() {
             return clientData;
         });
 
-        // Clear and reinitialize groups from hardcoded Catalonia structure
-        console.log('📝 Syncing Catalonia groups to Firebase...');
+        // Load groups from Firebase (or seed defaults on first run)
         const groupsSnapshot = await db.collection('groups').get();
-        
-        // Delete all existing groups
-        const batch = db.batch();
-        groupsSnapshot.docs.forEach(doc => {
-            batch.delete(doc.ref);
-        });
-        await batch.commit();
-        
-        // Save all default groups
-        for (const group of groups) {
-            await db.collection('groups').doc(group.id).set(group);
+        if (groupsSnapshot.docs.length > 0) {
+            groups = groupsSnapshot.docs.map(doc => doc.data());
+            console.log(`✅ Loaded ${groups.length} groups from Firebase`);
+        } else {
+            console.log('📝 No groups in Firebase, seeding defaults...');
+            for (const group of groups) {
+                await db.collection('groups').doc(group.id).set(group);
+            }
         }
 
         console.log('✅ Data loaded from Firebase:', { clients: clients.length, groups: groups.length });
@@ -84,54 +80,65 @@ async function loadFromFirebase() {
 async function saveClientsToFirebase() {
     if (!db) return;
 
-    try {
-        // Clear existing clients
-        const snapshot = await db.collection('clients').get();
-        const batch = db.batch();
-        snapshot.docs.forEach(doc => {
-            batch.delete(doc.ref);
-        });
-        await batch.commit();
+    const snapshot = await db.collection('clients').get();
+    const batch = db.batch();
+    snapshot.docs.forEach(doc => { batch.delete(doc.ref); });
+    await batch.commit();
 
-        // Save new clients
-        for (const client of clients) {
-            await db.collection('clients').doc(client.id.toString()).set(client);
-        }
-        console.log('💾 Clients saved to Firebase');
-    } catch (error) {
-        console.error('Error saving clients:', error);
+    for (const client of clients) {
+        await db.collection('clients').doc(client.id.toString()).set(client);
     }
+    console.log('💾 Clients saved to Firebase');
 }
 
 // Save groups to Firebase
 async function saveGroupsToFirebase() {
     if (!db) return;
 
-    try {
-        // Clear existing groups
-        const snapshot = await db.collection('groups').get();
-        const batch = db.batch();
-        snapshot.docs.forEach(doc => {
-            batch.delete(doc.ref);
-        });
-        await batch.commit();
+    const snapshot = await db.collection('groups').get();
+    const batch = db.batch();
+    snapshot.docs.forEach(doc => { batch.delete(doc.ref); });
+    await batch.commit();
 
-        // Save new groups
-        for (const group of groups) {
-            await db.collection('groups').doc(group.id).set(group);
-        }
-        console.log('💾 Groups saved to Firebase');
-    } catch (error) {
-        console.error('Error saving groups:', error);
+    for (const group of groups) {
+        await db.collection('groups').doc(group.id).set(group);
     }
+    console.log('💾 Groups saved to Firebase');
 }
 
-// Auto-save with debounce
+// Auto-save with debounce (silent errors)
 let autoSaveTimeout;
 function autoSaveToFirebase() {
     clearTimeout(autoSaveTimeout);
-    autoSaveTimeout = setTimeout(() => {
-        saveClientsToFirebase();
-        saveGroupsToFirebase();
+    autoSaveTimeout = setTimeout(async () => {
+        try {
+            await saveClientsToFirebase();
+            await saveGroupsToFirebase();
+        } catch (e) {
+            console.error('Auto-save error:', e);
+        }
     }, 1000);
+}
+
+// Manual save with UI feedback
+async function manualSave() {
+    const btn = document.getElementById('manualSaveBtn');
+    const status = document.getElementById('saveStatus');
+
+    if (btn) btn.disabled = true;
+    if (status) { status.textContent = 'Saving...'; status.className = 'save-status saving'; }
+
+    try {
+        await saveClientsToFirebase();
+        await saveGroupsToFirebase();
+        if (status) { status.textContent = '✅ Saved!'; status.className = 'save-status success'; }
+        setTimeout(() => {
+            if (status) { status.textContent = ''; status.className = 'save-status'; }
+        }, 3000);
+    } catch (error) {
+        console.error('Manual save error:', error);
+        if (status) { status.textContent = '❌ Error saving'; status.className = 'save-status error'; }
+    } finally {
+        if (btn) btn.disabled = false;
+    }
 }

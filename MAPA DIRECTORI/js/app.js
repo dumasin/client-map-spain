@@ -104,6 +104,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     
     if (deleteGroupBtn) deleteGroupBtn.addEventListener('click', deleteGroup);
+
+    const manualSaveBtn = document.getElementById('manualSaveBtn');
+    if (manualSaveBtn) manualSaveBtn.addEventListener('click', manualSave);
     
     // Display version
     const versionDisplay = document.getElementById('versionDisplay');
