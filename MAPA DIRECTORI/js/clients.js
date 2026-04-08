@@ -119,9 +119,16 @@ function updateClientsList() {
             const mtnStatus = getServiceStatus(client.services.mantenimiento);
             const admStatus = getServiceStatus(client.services.adm);
             
+            const folderOptions = groups.map(g =>
+                `<option value="${g.id}" ${g.id === client.groupId ? 'selected' : ''}>${g.name}</option>`
+            ).join('');
+
             return `
             <div class="client-item">
                 <div class="client-name">${client.name}</div>
+                <select style="width:100%;padding:4px 6px;font-size:11px;border:1px solid #e0e0e0;border-radius:4px;margin-bottom:8px;color:#555;" onchange="moveClientToGroup(${client.id}, this.value)">
+                    ${folderOptions}
+                </select>
                 <div style="margin-bottom: 8px;">
                     ${client.projects.length > 0 
                         ? client.projects.map(proj => `<span class="project-badge ${proj.toLowerCase()}">${proj}</span>`).join(' ')
@@ -171,6 +178,15 @@ function updateClientsList() {
             </div>
             `;
         }).join('');
+}
+
+function moveClientToGroup(clientId, groupId) {
+    const client = clients.find(c => c.id === clientId);
+    if (client) {
+        client.groupId = groupId;
+        autoSaveToFirebase();
+        updateDisplay();
+    }
 }
 
 function deleteClient(clientId) {
