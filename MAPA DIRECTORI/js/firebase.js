@@ -76,31 +76,42 @@ async function loadFromFirebase() {
     }
 }
 
-async function clearCollection(collectionName) {
-    const snapshot = await db.collection(collectionName).get();
-    const batch = db.batch();
-    snapshot.docs.forEach(doc => { batch.delete(doc.ref); });
-    await batch.commit();
-}
-
-// Save clients to Firebase
+// Save clients to Firebase (upsert — no delete-all, safe against concurrent saves)
 async function saveClientsToFirebase() {
     if (!db) return;
-    await clearCollection('clients');
+    // Upsert all current clients first (write before delete to prevent data loss)
     for (const client of clients) {
         await db.collection('clients').doc(client.id.toString()).set(client);
     }
-    console.log('💾 Clients saved to Firebase');
+    // Remove clients that no longer exist in the list
+    const snapshot = await db.collection('clients').get();
+    const currentIds = new Set(clients.map(c => c.id.toString()));
+    const toDelete = snapshot.docs.filter(d => !currentIds.has(d.id));
+    if (toDelete.length > 0) {
+        const batch = db.batch();
+        toDelete.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
+    }
+    console.log(`💾 Clients saved (${clients.length})`);
 }
 
-// Save groups to Firebase
+// Save groups to Firebase (upsert — no delete-all)
 async function saveGroupsToFirebase() {
     if (!db) return;
-    await clearCollection('groups');
+    // Upsert all current groups first
     for (const group of groups) {
         await db.collection('groups').doc(group.id).set(group);
     }
-    console.log('💾 Groups saved to Firebase');
+    // Remove groups that no longer exist
+    const snapshot = await db.collection('groups').get();
+    const currentIds = new Set(groups.map(g => g.id));
+    const toDelete = snapshot.docs.filter(d => !currentIds.has(d.id));
+    if (toDelete.length > 0) {
+        const batch = db.batch();
+        toDelete.forEach(doc => batch.delete(doc.ref));
+        await batch.commit();
+    }
+    console.log(`💾 Groups saved (${groups.length})`);
 }
 
 // Auto-save with debounce (silent errors)

@@ -20,81 +20,122 @@ const towns = [
   "Sarrià de Dalt", "Saus Camallera I Llampaies", "Sentmenat", "Sils", "Sitges", "Siurana", "Solsona", "Subirats", "Susqueda", "Súria",
   "Taradell", "Tarragona", "Teià", "Tordera", "Torredembarra", "Torrelavit", "Torrelles de Llobregat", "Torrent", "Torroella de Montgri", "Tossa de Mar",
   "Vall-llobrega", "Vallbona D'Anoia", "Vallgorguina", "Vallirana", "Vallromanes", "Valls", "Vandellòs i l'Hospitalet de L'Infant", "Vidreres", "Vidrà", "Vilablareix",
-  "Viladrau", "Vilalba Sasserra", "Vilallonga de Ter", "Vilanova del Camí", "Vilanova del Vallès", "Vilaverd", "El Far d'Empordà", "Juncosa de Montmell", "El Morell", "El Palau d'Anglesola",
+  "Viladrau", "Vilalba Sasserra", "Vilallonga de Ter", "Vilanova del Camí", "Vilanova del Vallès", "Vilaverd", "El Far d'Empordà", "Juncosa de Montmell (El Montmell)", "El Morell", "El Palau d'Anglesola",
   "El Papiol", "El Pla del Penedès", "El Vendrell", "Els Pallaresos", "El Pla de Santa Maria", "La Cellera de Ter", "El Pont de Vilomara I Rocafort", "Sant Julià del Llor i Bonmatí", "Sant Salvador de Guardiola"
 ];
+
+const SAVE_EVERY = 20; // Save and verify Firebase after every N towns
+
+async function saveAndVerify(page) {
+  console.log(`\n  💾 Saving to Firebase...`);
+
+  // Wait for the save button to be enabled
+  await page.waitForSelector('#manualSaveBtn:not([disabled])', { timeout: 15000 });
+  await page.click('#manualSaveBtn');
+
+  // Wait for "✅ Saved!" confirmation in the status element
+  try {
+    await page.waitForFunction(() => {
+      const s = document.getElementById('saveStatus');
+      return s && s.textContent.includes('Saved');
+    }, { timeout: 30000 });
+  } catch {
+    console.log('  ⚠️  Save confirmation not detected — continuing anyway');
+  }
+
+  // Verify Firebase document count
+  const firebaseCount = await page.evaluate(async () => {
+    try {
+      const snap = await db.collection('clients').get();
+      return snap.docs.length;
+    } catch (e) {
+      return -1;
+    }
+  });
+
+  if (firebaseCount === -1) {
+    console.log(`  ⚠️  Could not read Firebase count`);
+  } else {
+    console.log(`  ✅ Firebase has ${firebaseCount} clients total`);
+  }
+
+  await page.waitForTimeout(1000); // Brief pause before continuing
+}
 
 (async () => {
   const browser = await chromium.launch({ headless: false });
   const page = await browser.newPage();
-  
+
+  console.log('🌐 Opening app...');
   await page.goto('https://alphamap.netlify.app', { waitUntil: 'domcontentloaded', timeout: 60000 });
-  await page.waitForTimeout(2000); // Wait for scripts to load
-  
+  await page.waitForTimeout(3000); // Wait for Firebase data to load
+
   let successCount = 0;
   let failCount = 0;
-  
+
   for (let i = 0; i < towns.length; i++) {
     const town = towns[i];
-    console.log(`[${i + 1}/${towns.length}] Processing: ${town}`);
-    
+    console.log(`[${i + 1}/${towns.length}] ${town}`);
+
     try {
-      // Clear search
-      const searchInput = await page.locator('#searchInput');
+      // Clear and fill search input
+      const searchInput = page.locator('#searchInput');
       await searchInput.clear();
       await searchInput.fill(town);
-      
-      // Wait for search results to appear
-      await page.waitForTimeout(1500);
-      
-      // Try to click first search result - use safer selector
-      try {
-        const results = await page.locator('.search-result').all();
-        if (results.length > 0) {
-          await results[0].click();
-          await page.waitForTimeout(800);
-        } else {
-          throw new Error('No search results found');
-        }
-      } catch (e) {
-        console.log(`  ⚠️ Search result not found for: ${town}`);
+
+      // Wait for results to appear
+      await page.waitForTimeout(1800);
+
+      const results = await page.locator('.search-result').all();
+      if (results.length === 0) {
+        console.log(`  ⚠️  No results for: ${town}`);
         failCount++;
         continue;
       }
-      
-      // Uncheck any checked project checkboxes (make sure no projects selected)
-      try {
-        const projectCheckboxes = await page.locator('#projectTypesSection input[type="checkbox"]').all();
-        for (const checkbox of projectCheckboxes) {
-          if (await checkbox.isChecked()) {
-            await checkbox.uncheck();
-          }
-        }
-      } catch (e) {
-        // Continue even if checkboxes not found
+
+      await results[0].click();
+      await page.waitForTimeout(600);
+
+      // Uncheck any pre-checked project checkboxes
+      const checkboxes = await page.locator('#projectTypesSection input[type="checkbox"]').all();
+      for (const cb of checkboxes) {
+        if (await cb.isChecked()) await cb.uncheck();
       }
-      
-      // Click Add button
-      const addBtn = await page.locator('#addBtn');
-      const isEnabled = await addBtn.isEnabled();
-      if (!isEnabled) {
-        console.log(`  ⚠️ Add button disabled for: ${town}`);
+
+      // Check Add button is enabled
+      const addBtn = page.locator('#addBtn');
+      if (!(await addBtn.isEnabled())) {
+        console.log(`  ⚠️  Add button disabled for: ${town}`);
         failCount++;
         continue;
       }
-      
+
       await addBtn.click();
-      await page.waitForTimeout(2000); // Wait for Firebase save + display update
-      
-      console.log(`  ✅ Added: ${town}`);
+      await page.waitForTimeout(1500); // Let autoSave debounce start
+
+      console.log(`  ✅ Added`);
       successCount++;
-      
+
+      // Save and verify every SAVE_EVERY towns
+      if (successCount % SAVE_EVERY === 0) {
+        await saveAndVerify(page);
+      }
+
     } catch (error) {
-      console.log(`  ❌ Failed: ${town} - ${error.message}`);
+      console.log(`  ❌ Error: ${error.message}`);
       failCount++;
     }
   }
-  
-  console.log(`\n📊 Summary: ✅ ${successCount} added, ❌ ${failCount} failed`);
+
+  // Final save and verification
+  console.log('\n─────────────────────────────────');
+  console.log('🏁 All towns processed. Final save...');
+  await saveAndVerify(page);
+
+  console.log('\n📊 Summary:');
+  console.log(`   ✅ Added:   ${successCount}`);
+  console.log(`   ❌ Failed:  ${failCount}`);
+  console.log(`   Total:     ${towns.length}`);
+
   await browser.close();
 })();
