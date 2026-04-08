@@ -80,6 +80,7 @@ function setupClientCheckboxes() {
                 client.projects = client.projects.filter(p => p !== projectType);
             }
             
+            autoSaveToFirebase();
             updateDisplay();
         }
     });
@@ -172,5 +173,6 @@ function updateClientsList() {
 
 function deleteClient(clientId) {
     clients = clients.filter(c => c.id !== clientId);
+    autoSaveToFirebase();
     updateDisplay();
 }

@@ -76,15 +76,17 @@ async function loadFromFirebase() {
     }
 }
 
-// Save clients to Firebase
-async function saveClientsToFirebase() {
-    if (!db) return;
-
-    const snapshot = await db.collection('clients').get();
+async function clearCollection(collectionName) {
+    const snapshot = await db.collection(collectionName).get();
     const batch = db.batch();
     snapshot.docs.forEach(doc => { batch.delete(doc.ref); });
     await batch.commit();
+}
 
+// Save clients to Firebase
+async function saveClientsToFirebase() {
+    if (!db) return;
+    await clearCollection('clients');
     for (const client of clients) {
         await db.collection('clients').doc(client.id.toString()).set(client);
     }
@@ -94,12 +96,7 @@ async function saveClientsToFirebase() {
 // Save groups to Firebase
 async function saveGroupsToFirebase() {
     if (!db) return;
-
-    const snapshot = await db.collection('groups').get();
-    const batch = db.batch();
-    snapshot.docs.forEach(doc => { batch.delete(doc.ref); });
-    await batch.commit();
-
+    await clearCollection('groups');
     for (const group of groups) {
         await db.collection('groups').doc(group.id).set(group);
     }

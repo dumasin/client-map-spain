@@ -4,7 +4,6 @@
 
 let currentSearchResult = null;
 let searchTimeout;
-let lastQuery = '';
 
 function setupSearch() {
     const searchInput = document.getElementById('searchInput');
